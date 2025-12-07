@@ -1,0 +1,9 @@
+:{$PORT}
+
+root * public
+
+php_frankenphp
+
+file_server
+
+encode zstd gzip
