@@ -1,5 +1,2 @@
-[build]
-builder = "heroku/buildpacks:20"
-
 [start]
-cmd = ["php", "artisan", "frankenphp:start"]
+cmd = "php artisan frankenphp:start"
