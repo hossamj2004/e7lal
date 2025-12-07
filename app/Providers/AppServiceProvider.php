@@ -21,7 +21,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+        try {
+            DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+        }catch (\Exception $e){}
 
     }
 }
