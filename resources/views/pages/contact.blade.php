@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'تواصل معانا - Swape It')
+@section('title', 'تواصل معانا - E7lal.com')
 
 @section('styles')
 <style>
@@ -270,7 +270,7 @@
                     <i class="bi bi-envelope"></i>
                     <h4>البريد الإلكتروني</h4>
                     <p>ابعتلنا إيميل وهنرد عليك</p>
-                    <a href="mailto:info@swapeit.com">info@swapeit.com</a>
+                    <a href="mailto:info@e7lal.com">info@e7lal.com</a>
                 </div>
             </div>
         </div>
@@ -309,7 +309,7 @@
                         <i class="bi bi-envelope"></i>
                         <div>
                             <h4>البريد الإلكتروني</h4>
-                            <p>info@swapeit.com</p>
+                            <p>info@e7lal.com</p>
                         </div>
                     </div>
                     
@@ -399,5 +399,3 @@
     </div>
 </section>
 @endsection
-
-

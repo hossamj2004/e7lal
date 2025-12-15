@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'إضافة سيارة - Swape It')
+@section('title', 'إضافة سيارة - E7lal.com')
 @section('page-title', 'إضافة سيارة جديدة')
 
 @section('content')
@@ -102,5 +102,3 @@
     </div>
 </div>
 @endsection
-
-

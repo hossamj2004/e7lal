@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'تقديم عرض - Swape It')
+@section('title', 'تقديم عرض - E7lal.com')
 @section('page-title', 'تقديم عرض تبديل')
 
 @section('content')
@@ -114,5 +114,3 @@
     </form>
 </div>
 @endsection
-
-

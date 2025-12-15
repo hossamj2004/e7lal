@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'لوحة التحكم - Swape It')
+@section('title', 'لوحة التحكم - E7lal.com')
 @section('page-title', 'لوحة التحكم')
 
 @section('content')
@@ -126,11 +126,9 @@
 
 @if($activeCar && $activeCar->isPriced())
 <div class="mt-4">
-    <a href="{{ route('cars') }}" class="btn btn-primary-custom btn-lg">
+    <a href="{{ route('cars') }}" class="btn btn-primary-custom btn-lg" style="color: white;">
         <i class="bi bi-search me-2"></i>تصفح السيارات المتاحة للتبديل
     </a>
 </div>
 @endif
 @endsection
-
-

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'تقييم سيارة - Swape It')
+@section('title', 'تقييم سيارة - E7lal.com')
 @section('page-title', 'تقييم سيارة: ' . $userCar->full_name)
 
 @section('content')
@@ -127,5 +127,3 @@
     </div>
 </div>
 @endsection
-
-

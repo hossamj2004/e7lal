@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'كل العروض - Swape It')
+@section('title', 'كل العروض - E7lal.com')
 @section('page-title', 'كل العروض')
 
 @section('content')
@@ -56,5 +56,3 @@
     {{ $offers->links() }}
 </div>
 @endsection
-
-

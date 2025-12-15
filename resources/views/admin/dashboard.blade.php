@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'لوحة تحكم المدير - Swape It')
+@section('title', 'لوحة تحكم المدير - E7lal.com')
 @section('page-title', 'لوحة تحكم المدير')
 
 @section('content')
@@ -115,5 +115,3 @@
     </div>
 </div>
 @endsection
-
-

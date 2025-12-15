@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'السيارات المتاحة - Swape It')
+@section('title', 'السيارات المتاحة - E7lal.com')
 
 @section('content')
 <!-- Page Header -->
 <section class="page-header" style="padding-top: 120px; padding-bottom: 40px;">
     <div class="container">
-        <h1 class="fw-bold" style="color: var(--dark-color);">السيارات المتاحة للتبديل</h1>
-        <p class="text-muted">اختار عربيتك الجديدة وقدم عرض التبديل</p>
+        <h1 class="fw-bold" style="color: white;">السيارات المتاحة للتبديل</h1>
+        <p class="text-muted" style="color: white !important;">اختار عربيتك الجديدة وقدم عرض التبديل</p>
     </div>
 </section>
 

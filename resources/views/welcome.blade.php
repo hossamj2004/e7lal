@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Swape It - بدّل عربيتك</title>
+    <title>E7lal.com - بدّل عربيتك</title>
     
     <!-- Bootstrap RTL CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
@@ -303,13 +303,6 @@
             line-height: 1.7;
         }
         
-        .step-arrow {
-            position: absolute;
-            top: 50px;
-            left: -30px;
-            font-size: 2rem;
-            color: var(--accent-color);
-        }
         
         /* CTA Section */
         .cta-section {
@@ -437,9 +430,6 @@
                 margin-right: 0;
             }
             
-            .step-arrow {
-                display: none;
-            }
             
             .section-title {
                 font-size: 1.8rem;
@@ -452,7 +442,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
-                <img src="/imgs/logo.png" alt="Swape It Logo">
+                <img src="/imgs/logo.png" alt="E7lal.com Logo">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: rgba(255,255,255,0.5);">
@@ -493,7 +483,7 @@
                         <span style="color: var(--accent-color);">بأحسن سعر</span>
                     </h1>
                     <p class="hero-subtitle">
-                        مع Swape It، تقدر تبدّل عربيتك بعربية أحدث وأحسن بأسعار عادلة وشفافة. 
+                        مع E7lal.com، تقدر تبدّل عربيتك بعربية أحدث وأحسن بأسعار عادلة وشفافة. 
                         عملية سهلة وسريعة من غير أي تعقيدات!
                     </p>
                     <div class="d-flex flex-wrap">
@@ -564,7 +554,7 @@
     <section class="features-section">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-title">ليه تختار Swape It؟</h2>
+                <h2 class="section-title">ليه تختار E7lal.com؟</h2>
                 <p class="section-subtitle">نقدملك خدمة مميزة وسهلة لتبديل عربيتك</p>
             </div>
             <div class="row g-4">
@@ -663,7 +653,6 @@
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                     <div class="step-card">
-                        <span class="step-arrow d-none d-lg-block"><i class="bi bi-arrow-left"></i></span>
                         <div class="step-number">2</div>
                         <h4 class="step-title">اختار عربيتك الجديدة</h4>
                         <p class="step-text">
@@ -673,7 +662,6 @@
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                     <div class="step-card">
-                        <span class="step-arrow d-none d-lg-block"><i class="bi bi-arrow-left"></i></span>
                         <div class="step-number">3</div>
                         <h4 class="step-title">معاينة وتقييم</h4>
                         <p class="step-text">
@@ -683,7 +671,6 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="step-card">
-                        <span class="step-arrow d-none d-lg-block"><i class="bi bi-arrow-left"></i></span>
                         <div class="step-number">4</div>
                         <h4 class="step-title">استلم عربيتك الجديدة</h4>
                         <p class="step-text">
@@ -726,7 +713,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                     <div class="footer-logo">
-                        <img src="/imgs/logo.png" alt="Swape It">
+                        <img src="/imgs/logo.png" alt="E7lal.com">
                     </div>
                     <p class="footer-text">
                         منصة تبديل السيارات الأولى في مصر. 
@@ -770,7 +757,7 @@
                         </li>
                         <li>
                             <i class="bi bi-envelope me-2 text-info"></i>
-                            info@swapeit.com
+                            info@e7lal.com
                         </li>
                         <li>
                             <i class="bi bi-clock me-2 text-info"></i>
@@ -781,7 +768,7 @@
             </div>
             <div class="footer-bottom">
                 <p class="mb-0">
-                    © 2024 Swape It - جميع الحقوق محفوظة
+                    © 2024 E7lal.com - جميع الحقوق محفوظة
                 </p>
             </div>
         </div>

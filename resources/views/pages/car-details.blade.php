@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $car->full_name . ' - Swape It')
+@section('title', $car->full_name . ' - E7lal.com')
 
 @section('content')
 <section class="page-header" style="padding-top: 120px; padding-bottom: 40px;">
@@ -134,5 +134,3 @@
     </div>
 </section>
 @endsection
-
-

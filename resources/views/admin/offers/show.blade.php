@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'تفاصيل العرض - Swape It')
+@section('title', 'تفاصيل العرض - E7lal.com')
 @section('page-title', 'تفاصيل العرض #' . $offer->id)
 
 @section('content')
@@ -112,5 +112,3 @@
 </div>
 @endif
 @endsection
-
-

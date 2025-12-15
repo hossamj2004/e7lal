@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Swape It - بدّل عربيتك')</title>
+    <title>@yield('title', 'E7lal.com - بدّل عربيتك')</title>
     
     <!-- Bootstrap RTL CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
@@ -261,7 +261,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
-                <img src="/imgs/logo.png" alt="Swape It Logo">
+                <img src="/imgs/logo.png" alt="E7lal.com Logo">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: rgba(255,255,255,0.5);">
@@ -316,7 +316,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
                     <div class="footer-logo">
-                        <img src="/imgs/logo.png" alt="Swape It">
+                        <img src="/imgs/logo.png" alt="E7lal.com">
                     </div>
                     <p class="footer-text">
                         منصة تبديل السيارات الأولى في مصر. 
@@ -360,7 +360,7 @@
                         </li>
                         <li>
                             <i class="bi bi-envelope me-2 text-info"></i>
-                            info@swapeit.com
+                            info@e7lal.com
                         </li>
                         <li>
                             <i class="bi bi-clock me-2 text-info"></i>
@@ -371,7 +371,7 @@
             </div>
             <div class="footer-bottom">
                 <p class="mb-0">
-                    © 2024 Swape It - جميع الحقوق محفوظة
+                    © 2024 E7lal.com - جميع الحقوق محفوظة
                 </p>
             </div>
         </div>

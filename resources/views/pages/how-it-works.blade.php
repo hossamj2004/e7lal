@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'إزاي بتشتغل؟ - Swape It')
+@section('title', 'إزاي بتشتغل؟ - E7lal.com')
 
 @section('styles')
 <style>
@@ -59,14 +59,6 @@
         font-size: 1.1rem;
     }
     
-    .connector {
-        position: absolute;
-        top: 100px;
-        left: -60px;
-        width: 120px;
-        height: 3px;
-        background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
-    }
     
     .benefits-section {
         padding: 80px 0;
@@ -163,9 +155,6 @@
     }
     
     @media (max-width: 768px) {
-        .connector {
-            display: none;
-        }
         
         .step-num {
             right: 20px;
@@ -214,7 +203,6 @@
             
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <div class="process-step">
-                    <span class="connector d-none d-lg-block"></span>
                     <span class="step-num">2</span>
                     <div class="step-icon">
                         <i class="bi bi-search"></i>
@@ -228,7 +216,6 @@
             
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
                 <div class="process-step">
-                    <span class="connector d-none d-lg-block"></span>
                     <span class="step-num">3</span>
                     <div class="step-icon">
                         <i class="bi bi-clipboard-check"></i>
@@ -242,7 +229,6 @@
             
             <div class="col-lg-3 col-md-6">
                 <div class="process-step">
-                    <span class="connector d-none d-lg-block"></span>
                     <span class="step-num">4</span>
                     <div class="step-icon">
                         <i class="bi bi-key"></i>
@@ -262,7 +248,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title">ليه تبدّل معانا؟</h2>
-            <p class="section-subtitle">مميزات كتير لما تبدّل عربيتك مع Swape It</p>
+            <p class="section-subtitle">مميزات كتير لما تبدّل عربيتك مع E7lal.com</p>
         </div>
         
         <div class="row g-4">
@@ -436,5 +422,3 @@
     </div>
 </section>
 @endsection
-
-

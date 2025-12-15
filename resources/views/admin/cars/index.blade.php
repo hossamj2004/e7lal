@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'إدارة السيارات - Swape It')
+@section('title', 'إدارة السيارات - E7lal.com')
 @section('page-title', 'السيارات المتاحة للتبديل')
 
 @section('content')
@@ -75,5 +75,3 @@
     {{ $cars->links() }}
 </div>
 @endsection
-
-

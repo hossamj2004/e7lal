@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'إضافة مستخدم - Swape It')
+@section('title', 'إضافة مستخدم - E7lal.com')
 @section('page-title', 'إضافة مستخدم جديد')
 
 @section('content')
@@ -56,5 +56,3 @@
     </div>
 </div>
 @endsection
-
-

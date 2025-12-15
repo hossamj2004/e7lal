@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'تسجيل الدخول - Swape It')
+@section('title', 'تسجيل الدخول - E7lal.com')
 
 @section('content')
 <section class="page-header" style="min-height: 100vh; display: flex; align-items: center;">
@@ -10,7 +10,7 @@
                 <div class="card shadow-lg border-0" style="border-radius: 20px;">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <img src="/imgs/logo.png" alt="Swape It" height="60" class="mb-3">
+                            <img src="/imgs/logo.png" alt="E7lal.com" height="60" class="mb-3">
                             <h3 class="fw-bold" style="color: var(--dark-color);">تسجيل الدخول</h3>
                             <p class="text-muted">أهلاً بيك تاني!</p>
                         </div>
@@ -61,5 +61,3 @@
     </div>
 </section>
 @endsection
-
-

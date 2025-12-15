@@ -11,10 +11,10 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@swapeit.com'],
+            ['email' => 'admin@e7lal.com'],
             [
                 'name' => 'مدير النظام',
-                'email' => 'admin@swapeit.com',
+                'email' => 'admin@e7lal.com',
                 'password' => Hash::make('admin123'),
                 'is_admin' => true,
                 'phone' => '01000000000',
@@ -22,5 +22,3 @@ class AdminUserSeeder extends Seeder
         );
     }
 }
-
-

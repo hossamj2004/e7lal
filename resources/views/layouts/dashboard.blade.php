@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'لوحة التحكم - Swape It')</title>
+    <title>@yield('title', 'لوحة التحكم - E7lal.com')</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -139,7 +139,7 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-logo">
-            <img src="/imgs/logo.png" alt="Swape It">
+            <img src="/imgs/logo.png" alt="E7lal.com">
         </div>
         
         <ul class="sidebar-menu">
@@ -212,7 +212,7 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="top-bar">
-            <h5 class="mb-0 fw-bold">@yield('page-title', 'لوحة التحكم')</h5>
+            <h5 class="mb-0 fw-bold" style="color: white;">@yield('page-title', 'لوحة التحكم')</h5>
             <div class="d-flex align-items-center gap-3">
                 <span class="text-muted">أهلاً، {{ auth()->user()->name }}</span>
             </div>
@@ -241,5 +241,3 @@
     @yield('scripts')
 </body>
 </html>
-
-

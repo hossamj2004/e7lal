@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'إدارة المستخدمين - Swape It')
+@section('title', 'إدارة المستخدمين - E7lal.com')
 @section('page-title', 'إدارة المستخدمين')
 
 @section('content')
@@ -60,5 +60,3 @@
     {{ $users->links() }}
 </div>
 @endsection
-
-

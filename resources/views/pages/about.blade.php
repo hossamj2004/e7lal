@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'من نحن - Swape It')
+@section('title', 'من نحن - E7lal.com')
 
 @section('styles')
 <style>
@@ -213,18 +213,18 @@
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
                 <div class="about-image">
-                    <img src="/imgs/homepage.jpg" alt="عن Swape It">
+                    <img src="/imgs/homepage.jpg" alt="عن E7lal.com">
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="about-content">
                     <h2>قصتنا</h2>
                     <p>
-                        بدأت فكرة Swape It من إيماننا بإن تبديل السيارات لازم يكون عملية سهلة وشفافة. 
+                        بدأت فكرة E7lal.com من إيماننا بإن تبديل السيارات لازم يكون عملية سهلة وشفافة. 
                         شفنا كتير من الناس بتعاني في بيع عربياتها القديمة وشراء واحدة جديدة، وقررنا نغيّر ده.
                     </p>
                     <p>
-                        النهارده، Swape It بقت منصة موثوقة لتبديل السيارات في مصر، 
+                        النهارده، E7lal.com بقت منصة موثوقة لتبديل السيارات في مصر، 
                         بنساعد آلاف العملاء يبدّلوا عربياتهم بكل سهولة وأمان وبأسعار عادلة.
                     </p>
                     
@@ -401,5 +401,3 @@
     </div>
 </section>
 @endsection
-
-
