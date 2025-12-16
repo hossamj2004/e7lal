@@ -62,7 +62,7 @@
                             </form>
                         </td>
                     </tr>
-                @endfor
+                @endforeach
             </tbody>
         </table>
     </div>
