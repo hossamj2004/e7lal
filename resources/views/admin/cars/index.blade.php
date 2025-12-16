@@ -62,11 +62,7 @@
                             </form>
                         </td>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="text-center py-5">لا توجد سيارات</td>
-                    </tr>
-                @endforelse
+                @endfor
             </tbody>
         </table>
     </div>
