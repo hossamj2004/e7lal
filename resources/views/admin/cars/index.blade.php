@@ -25,7 +25,6 @@
                 </tr>
             </thead>
             <tbody>
-            {{dd($cars)}}
                 @foreach($cars as $car)
                     <tr>
                         <td>{{ $car->id }}</td>
