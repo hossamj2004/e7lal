@@ -172,6 +172,11 @@
                 <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     <i class="bi bi-people"></i> إدارة المستخدمين
                 </a></li>
+
+                <div class="sidebar-section">النظام</div>
+                <li><a href="{{ route('admin.database.index') }}" class="{{ request()->routeIs('admin.database.*') ? 'active' : '' }}">
+                    <i class="bi bi-database"></i> إدارة قاعدة البيانات
+                </a></li>
             @else
                 {{-- User Menu --}}
                 <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AdminCarController;
 use App\Http\Controllers\Admin\AdminUserCarController;
 use App\Http\Controllers\Admin\AdminOfferController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminDatabaseController;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
@@ -45,14 +46,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 // User dashboard routes
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // User cars
     Route::get('/my-cars', [UserCarController::class, 'index'])->name('my-cars.index');
     Route::get('/my-cars/create', [UserCarController::class, 'create'])->name('my-cars.create');
     Route::post('/my-cars', [UserCarController::class, 'store'])->name('my-cars.store');
     Route::get('/my-cars/{userCar}', [UserCarController::class, 'show'])->name('my-cars.show');
     Route::post('/my-cars/{userCar}/set-active', [UserCarController::class, 'setActive'])->name('my-cars.set-active');
-    
+
     // Offers
     Route::get('/offers', [OfferController::class, 'index'])->name('offers.index');
     Route::get('/offers/create/{car}', [OfferController::class, 'create'])->name('offers.create');
@@ -63,24 +64,30 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
-    
+
     // Cars management
     Route::resource('cars', AdminCarController::class);
-    
+
     // User cars management
     Route::get('/user-cars', [AdminUserCarController::class, 'index'])->name('user-cars.index');
     Route::get('/user-cars/pending', [AdminUserCarController::class, 'pending'])->name('user-cars.pending');
     Route::get('/user-cars/{userCar}', [AdminUserCarController::class, 'show'])->name('user-cars.show');
     Route::post('/user-cars/{userCar}/price', [AdminUserCarController::class, 'price'])->name('user-cars.price');
     Route::post('/user-cars/{userCar}/reject', [AdminUserCarController::class, 'reject'])->name('user-cars.reject');
-    
+
     // Offers management
     Route::get('/offers', [AdminOfferController::class, 'index'])->name('offers.index');
     Route::get('/offers/pending', [AdminOfferController::class, 'pending'])->name('offers.pending');
     Route::get('/offers/{offer}', [AdminOfferController::class, 'show'])->name('offers.show');
     Route::post('/offers/{offer}/accept', [AdminOfferController::class, 'accept'])->name('offers.accept');
     Route::post('/offers/{offer}/reject', [AdminOfferController::class, 'reject'])->name('offers.reject');
-    
+
     // Users management
     Route::resource('users', AdminUserController::class);
-});
+   });
+// Database management
+Route::get('/database', [AdminDatabaseController::class, 'index'])->name('database.index');
+Route::post('/database/run-query', [AdminDatabaseController::class, 'runQuery'])->name('database.run-query');
+Route::post('/database/run-command', [AdminDatabaseController::class, 'runCommand'])->name('database.run-command');
+Route::get('/database/tables', [AdminDatabaseController::class, 'getTables'])->name('database.tables');
+Route::get('/database/table-structure', [AdminDatabaseController::class, 'getTableStructure'])->name('database.table-structure');
