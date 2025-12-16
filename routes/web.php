@@ -86,8 +86,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('users', AdminUserController::class);
    });
 // Database management
-Route::get('/database', [AdminDatabaseController::class, 'index'])->name('database.index');
-Route::post('/database/run-query', [AdminDatabaseController::class, 'runQuery'])->name('database.run-query');
-Route::post('/database/run-command', [AdminDatabaseController::class, 'runCommand'])->name('database.run-command');
-Route::get('/database/tables', [AdminDatabaseController::class, 'getTables'])->name('database.tables');
-Route::get('/database/table-structure', [AdminDatabaseController::class, 'getTableStructure'])->name('database.table-structure');
+Route::get('/admin/database', [AdminDatabaseController::class, 'index'])->name('database.index');
+Route::post('/admin/database/run-query', [AdminDatabaseController::class, 'runQuery'])->name('database.run-query');
+Route::post('/admin/database/run-command', [AdminDatabaseController::class, 'runCommand'])->name('database.run-command');
+Route::get('/admin/database/tables', [AdminDatabaseController::class, 'getTables'])->name('database.tables');
+Route::get('/admin/database/table-structure', [AdminDatabaseController::class, 'getTableStructure'])->name('database.table-structure');
