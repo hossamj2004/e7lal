@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Cars management
@@ -82,12 +82,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('/offers/{offer}/accept', [AdminOfferController::class, 'accept'])->name('offers.accept');
     Route::post('/offers/{offer}/reject', [AdminOfferController::class, 'reject'])->name('offers.reject');
 
+    Route::get('/database', [AdminDatabaseController::class, 'index'])->name('database.index');
+    Route::post('/database/run-query', [AdminDatabaseController::class, 'runQuery'])->name('database.run-query');
+    Route::post('/database/run-command', [AdminDatabaseController::class, 'runCommand'])->name('database.run-command');
+    Route::get('/database/tables', [AdminDatabaseController::class, 'getTables'])->name('database.tables');
+    Route::get('/database/table-structure', [AdminDatabaseController::class, 'getTableStructure'])->name('database.table-structure');
+
     // Users management
     Route::resource('users', AdminUserController::class);
    });
 // Database management
-Route::get('/admin/database', [AdminDatabaseController::class, 'index'])->name('admin.database.index');
-Route::post('/admin/database/run-query', [AdminDatabaseController::class, 'runQuery'])->name('admin.database.run-query');
-Route::post('/admin/database/run-command', [AdminDatabaseController::class, 'runCommand'])->name('admin.database.run-command');
-Route::get('/admin/database/tables', [AdminDatabaseController::class, 'getTables'])->name('admin.database.tables');
-Route::get('/admin/database/table-structure', [AdminDatabaseController::class, 'getTableStructure'])->name('admin.database.table-structure');
+
