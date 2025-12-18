@@ -45,15 +45,20 @@ class CarSavingService extends BaseSavingService
 
     public function saveRelatedData($model, $params)
     {
-        // Handle image upload if provided
-        if (isset($params['image_file']) && $params['image_file']) {
-            $file = $params['image_file'];
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/cars'), $filename);
-            $model->image = 'uploads/cars/' . $filename;
+        // Handle image URLs if provided
+        if (isset($params['images']) && is_array($params['images'])) {
+            // Filter out empty URLs and validate URLs
+            $validImages = [];
+            foreach ($params['images'] as $imageUrl) {
+                if (!empty(trim($imageUrl))) {
+                    // Basic URL validation
+                    if (filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                        $validImages[] = trim($imageUrl);
+                    }
+                }
+            }
+            $model->images = $validImages;
             $model->save();
         }
     }
 }
-
-

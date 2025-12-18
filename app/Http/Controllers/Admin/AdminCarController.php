@@ -36,7 +36,9 @@ class AdminCarController extends Controller
             'transmission' => 'required|in:automatic,manual',
             'price' => 'required|numeric|min:1',
             'description' => 'nullable|string|max:2000',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|url',
+            'youtube_video' => 'nullable|url',
             'status' => 'required|in:available,reserved,sold',
         ]);
 
@@ -66,7 +68,9 @@ class AdminCarController extends Controller
             'transmission' => 'required|in:automatic,manual',
             'price' => 'required|numeric|min:1',
             'description' => 'nullable|string|max:2000',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|url',
+            'youtube_video' => 'nullable|url',
             'status' => 'required|in:available,reserved,sold',
         ]);
 
@@ -92,5 +96,3 @@ class AdminCarController extends Controller
         }
     }
 }
-
-

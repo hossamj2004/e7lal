@@ -18,19 +18,64 @@
 <section class="pb-5">
     <div class="container">
         <div class="row g-4">
-            <!-- Car Image -->
+            <!-- Car Images -->
             <div class="col-lg-6">
                 <div class="card border-0 shadow-sm" style="border-radius: 20px; overflow: hidden;">
-                    @if($car->image)
-                        <img src="{{ asset($car->image) }}" class="img-fluid" alt="{{ $car->full_name }}" style="width: 100%; height: 400px; object-fit: cover;">
+                    @if($car->hasImages())
+                        @if($car->getImageCount() > 1)
+                            <!-- Image Carousel for multiple images -->
+                            <div id="carImagesCarousel" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+                                    @foreach($car->images as $index => $image)
+                                        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                            <img src="{{ $image }}" class="d-block w-100" alt="{{ $car->full_name }}" style="height: 400px; object-fit: cover;">
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carImagesCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carImagesCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            <!-- Image thumbnails -->
+                            <div class="d-flex justify-content-center mt-3 flex-wrap">
+                                @foreach($car->images as $index => $image)
+                                    <img src="{{ $image }}" class="me-2 mb-2 rounded shadow-sm" style="width: 80px; height: 60px; object-fit: cover; cursor: pointer; border: 2px solid {{ $index === 0 ? '#1a5f7a' : 'transparent' }};" data-bs-target="#carImagesCarousel" data-bs-slide-to="{{ $index }}">
+                                @endforeach
+                            </div>
+                        @else
+                            <!-- Single image -->
+                            <img src="{{ $car->getFirstImage() }}" class="img-fluid" alt="{{ $car->full_name }}" style="width: 100%; height: 400px; object-fit: cover;">
+                        @endif
                     @else
                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
                             <i class="bi bi-car-front-fill text-muted" style="font-size: 8rem;"></i>
                         </div>
                     @endif
                 </div>
+
+                <!-- YouTube Video -->
+                @if($car->hasYouTubeVideo())
+                    <div class="mt-3">
+                        <h5 class="fw-bold mb-3" style="color: var(--dark-color);">
+                            <i class="bi bi-youtube text-danger me-2"></i>فيديو السيارة
+                        </h5>
+                        <div class="ratio ratio-16x9" style="border-radius: 20px; overflow: hidden;">
+                            <iframe src="{{ $car->getYouTubeEmbedUrl() }}" title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen
+                                    style="border-radius: 20px;">
+                            </iframe>
+                        </div>
+                    </div>
+                @endif
             </div>
-            
+
             <!-- Car Details -->
             <div class="col-lg-6">
                 <div class="card border-0 shadow-sm h-100" style="border-radius: 20px;">

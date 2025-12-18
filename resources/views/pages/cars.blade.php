@@ -90,8 +90,8 @@
             @forelse($cars as $car)
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 border-0 shadow-sm" style="border-radius: 20px; overflow: hidden;">
-                        @if($car->image)
-                            <img src="{{ asset($car->image) }}" class="card-img-top" alt="{{ $car->full_name }}" style="height: 200px; object-fit: cover;">
+                        @if($car->hasImages())
+                            <img src="{{ $car->getFirstImage() }}" class="card-img-top" alt="{{ $car->full_name }}" style="height: 200px; object-fit: cover;">
                         @else
                             <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
                                 <i class="bi bi-car-front-fill text-muted" style="font-size: 5rem;"></i>

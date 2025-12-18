@@ -343,46 +343,73 @@
             <h2 class="section-title">فريقنا</h2>
             <p class="section-subtitle">فريق محترف ومتخصص لخدمتك</p>
         </div>
-        
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
+
+        <div class="row g-4 justify-content-center">
+            <!-- Hossam Hassan - President -->
+            <div class="col-lg-4 col-md-6">
                 <div class="team-card">
-                    <div class="team-avatar">
-                        <i class="bi bi-person"></i>
+                    <div class="team-avatar" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+                        ح
                     </div>
-                    <h4>أحمد محمد</h4>
-                    <p class="role">المؤسس والمدير التنفيذي</p>
-                    <p>خبرة أكتر من 10 سنين في مجال السيارات</p>
+                    <h4>حسام حسن</h4>
+                    <p class="role">الرئيس التنفيذي</p>
+                    <p>القائد المؤسس لمنصة E7lal.com ورؤية التحول الرقمي في سوق السيارات المصري</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+
+            <!-- Mohamed Gamal - Evaluation -->
+            <div class="col-lg-4 col-md-6">
                 <div class="team-card">
-                    <div class="team-avatar">
-                        <i class="bi bi-person"></i>
+                    <div class="team-avatar" style="background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));">
+                        م
                     </div>
-                    <h4>سارة علي</h4>
-                    <p class="role">مدير خدمة العملاء</p>
-                    <p>متخصصة في تجربة العملاء ورضاهم</p>
+                    <h4>محمد جمال</h4>
+                    <p class="role">مدير التقييم</p>
+                    <p>خبير تقييم السيارات بأعلى معايير الدقة والعدالة في السوق المصري</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+
+            <!-- Ahmed Gooda - Marketing -->
+            <div class="col-lg-4 col-md-6">
                 <div class="team-card">
-                    <div class="team-avatar">
-                        <i class="bi bi-person"></i>
+                    <div class="team-avatar" style="background: linear-gradient(135deg, var(--accent-color), var(--primary-color));">
+                        أ
                     </div>
-                    <h4>محمود حسن</h4>
-                    <p class="role">رئيس قسم التقييم</p>
-                    <p>خبير في تقييم السيارات وفحصها</p>
+                    <h4>أحمد جودة</h4>
+                    <p class="role">مدير التسويق</p>
+                    <p>مسؤول عن بناء العلاقات مع العملاء وتطوير استراتيجية التسويق الرقمي</p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="team-card">
-                    <div class="team-avatar">
-                        <i class="bi bi-person"></i>
+        </div>
+
+        <!-- Team Values -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-10">
+                <div class="text-center">
+                    <h3 class="fw-bold mb-4" style="color: var(--dark-color);">قيمنا</h3>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="value-card p-4 rounded-3" style="background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                <i class="bi bi-shield-check text-primary mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="fw-bold">الثقة والأمانة</h5>
+                                <p class="text-muted mb-0">نضمن لك معاملة عادلة وآمنة في جميع تعاملاتك</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="value-card p-4 rounded-3" style="background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                <i class="bi bi-lightning-charge text-warning mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="fw-bold">السرعة والكفاءة</h5>
+                                <p class="text-muted mb-0">نقدم خدماتنا بأسرع وقت ممكن وبأعلى جودة</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="value-card p-4 rounded-3" style="background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                <i class="bi bi-people text-success mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="fw-bold">التركيز على العميل</h5>
+                                <p class="text-muted mb-0">رضاك هو أولويتنا الأولى في كل ما نقوم به</p>
+                            </div>
+                        </div>
                     </div>
-                    <h4>نورا أحمد</h4>
-                    <p class="role">مدير العمليات</p>
-                    <p>مسؤولة عن سير العمليات بسلاسة</p>
                 </div>
             </div>
         </div>

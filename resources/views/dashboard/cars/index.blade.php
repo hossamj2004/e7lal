@@ -33,8 +33,11 @@
                 </div>
                 
                 <div class="text-center mb-3">
-                    @if($car->image)
-                        <img src="{{ asset($car->image) }}" alt="{{ $car->full_name }}" class="img-fluid rounded-3" style="max-height: 150px;">
+                    @if($car->hasImages())
+                        <img src="{{ $car->getFirstImage() }}" alt="{{ $car->full_name }}" class="img-fluid rounded-3" style="max-height: 150px;">
+                        @if($car->getImageCount() > 1)
+                            <small class="text-muted d-block text-center mt-1">{{ $car->getImageCount() }} صور</small>
+                        @endif
                     @else
                         <div class="bg-light rounded-3 py-5">
                             <i class="bi bi-car-front-fill text-muted" style="font-size: 4rem;"></i>

@@ -87,14 +87,35 @@
                     </div>
                     
                     <div class="col-12">
-                        <label class="form-label fw-semibold">صورة السيارة</label>
-                        @if($car->image)
-                            <div class="mb-2">
-                                <img src="{{ asset($car->image) }}" alt="" class="rounded" style="max-height: 150px;">
-                            </div>
-                        @endif
-                        <input type="file" name="image_file" class="form-control" accept="image/*">
-                        <small class="text-muted">اتركه فارغاً للإبقاء على الصورة الحالية</small>
+                        <label class="form-label fw-semibold">صور السيارة (روابط الصور)</label>
+                        <div id="images-container">
+                            @if($car->images && count($car->images) > 0)
+                                @foreach($car->images as $index => $image)
+                                    <div class="input-group mb-2 image-input-group">
+                                        <input type="url" name="images[]" class="form-control" placeholder="https://example.com/image.jpg" value="{{ old('images.' . $index, $image) }}">
+                                        <button type="button" class="btn btn-outline-danger remove-image" style="{{ count($car->images) > 1 ? '' : 'display: none;' }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="input-group mb-2 image-input-group">
+                                    <input type="url" name="images[]" class="form-control" placeholder="https://example.com/image.jpg" value="{{ old('images.0') }}">
+                                    <button type="button" class="btn btn-outline-danger remove-image" style="display: none;">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="add-image">
+                            <i class="bi bi-plus-circle me-1"></i>إضافة صورة أخرى
+                        </button>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">فيديو يوتيوب (اختياري)</label>
+                        <input type="url" name="youtube_video" class="form-control" placeholder="https://www.youtube.com/watch?v=VIDEO_ID أو https://youtu.be/VIDEO_ID" value="{{ old('youtube_video', $car->youtube_video) }}">
+                        <small class="text-muted">أدخل رابط فيديو يوتيوب كامل أو معرف الفيديو فقط (مثل: dQw4w9WgXcQ)</small>
                     </div>
                 </div>
                 
@@ -104,6 +125,44 @@
                     </button>
                     <a href="{{ route('admin.cars.index') }}" class="btn btn-outline-secondary btn-lg me-2">إلغاء</a>
                 </div>
+            </form>
+
+            <script>
+                document.getElementById('add-image').addEventListener('click', function() {
+                    const container = document.getElementById('images-container');
+                    const imageGroups = container.querySelectorAll('.image-input-group');
+                    const newGroup = imageGroups[0].cloneNode(true);
+
+                    // Clear the value of the new input
+                    const newInput = newGroup.querySelector('input');
+                    newInput.value = '';
+
+                    // Show remove button for all groups
+                    imageGroups.forEach(group => {
+                        group.querySelector('.remove-image').style.display = 'block';
+                    });
+                    newGroup.querySelector('.remove-image').style.display = 'block';
+
+                    container.appendChild(newGroup);
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('remove-image') || e.target.closest('.remove-image')) {
+                        const imageGroup = e.target.closest('.image-input-group');
+                        const container = document.getElementById('images-container');
+                        const imageGroups = container.querySelectorAll('.image-input-group');
+
+                        if (imageGroups.length > 1) {
+                            imageGroup.remove();
+
+                            // Hide remove button if only one input remains
+                            if (container.querySelectorAll('.image-input-group').length === 1) {
+                                container.querySelector('.remove-image').style.display = 'none';
+                            }
+                        }
+                    }
+                });
+            </script>
             </form>
         </div>
     </div>

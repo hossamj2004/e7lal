@@ -27,8 +27,8 @@
     <div class="col-lg-4">
         <div class="table-card h-100">
             <h5 class="fw-bold mb-4 text-primary"><i class="bi bi-arrow-left-circle me-2"></i>السيارة المطلوبة</h5>
-            @if($offer->car->image)
-                <img src="{{ asset($offer->car->image) }}" alt="" class="img-fluid rounded-3 mb-3">
+            @if($offer->car->hasImages())
+                <img src="{{ $offer->car->getFirstImage() }}" alt="" class="img-fluid rounded-3 mb-3">
             @endif
             <h5>{{ $offer->car->full_name }}</h5>
             <p class="mb-1">{{ number_format($offer->car->mileage) }} كم • {{ $offer->car->fuel_type_arabic }}</p>

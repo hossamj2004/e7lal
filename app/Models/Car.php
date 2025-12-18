@@ -19,7 +19,8 @@ class Car extends Model
         'transmission',
         'price',
         'description',
-        'image',
+        'images',
+        'youtube_video',
         'status',
     ];
 
@@ -27,6 +28,7 @@ class Car extends Model
         'price' => 'decimal:2',
         'year' => 'integer',
         'mileage' => 'integer',
+        'images' => 'array',
     ];
 
     // Relationships
@@ -86,6 +88,60 @@ class Car extends Model
             default => '<span class="badge bg-light">غير معروف</span>'
         };
     }
+
+    // Image helper methods
+    public function hasImages(): bool
+    {
+        return !empty($this->images) && is_array($this->images);
+    }
+
+    public function getFirstImage(): ?string
+    {
+        return $this->hasImages() ? $this->images[0] : null;
+    }
+
+    public function getImageCount(): int
+    {
+        return $this->hasImages() ? count($this->images) : 0;
+    }
+
+    // YouTube video helper methods
+    public function hasYouTubeVideo(): bool
+    {
+        return !empty($this->youtube_video);
+    }
+
+    public function getYouTubeVideoId(): ?string
+    {
+        if (!$this->hasYouTubeVideo()) {
+            return null;
+        }
+
+        $url = $this->youtube_video;
+
+        // Extract video ID from various YouTube URL formats
+        $patterns = [
+            '/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/',
+            '/youtube\.com\/v\/([a-zA-Z0-9_-]{11})/',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url, $matches)) {
+                return $matches[1];
+            }
+        }
+
+        // If it's already just the video ID
+        if (preg_match('/^[a-zA-Z0-9_-]{11}$/', $url)) {
+            return $url;
+        }
+
+        return null;
+    }
+
+    public function getYouTubeEmbedUrl(): ?string
+    {
+        $videoId = $this->getYouTubeVideoId();
+        return $videoId ? "https://www.youtube.com/embed/{$videoId}" : null;
+    }
 }
-
-

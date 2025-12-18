@@ -30,8 +30,11 @@
                         <td>{{ $car->id }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                @if($car->image)
-                                    <img src="{{ asset($car->image) }}" alt="" class="rounded" style="width: 60px; height: 40px; object-fit: cover;">
+                                @if($car->hasImages())
+                                    <img src="{{ $car->getFirstImage() }}" alt="" class="rounded" style="width: 60px; height: 40px; object-fit: cover;">
+                                    @if($car->getImageCount() > 1)
+                                        <small class="text-muted d-block">+{{ $car->getImageCount() - 1 }} أخرى</small>
+                                    @endif
                                 @else
                                     <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 60px; height: 40px;">
                                         <i class="bi bi-car-front text-muted"></i>

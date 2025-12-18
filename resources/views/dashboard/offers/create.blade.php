@@ -11,8 +11,8 @@
             <h5 class="fw-bold mb-4 text-primary"><i class="bi bi-arrow-left-circle me-2"></i>السيارة المطلوبة</h5>
             
             <div class="text-center mb-4">
-                @if($car->image)
-                    <img src="{{ asset($car->image) }}" alt="{{ $car->full_name }}" class="img-fluid rounded-3" style="max-height: 200px;">
+                @if($car->hasImages())
+                    <img src="{{ $car->getFirstImage() }}" alt="{{ $car->full_name }}" class="img-fluid rounded-3" style="max-height: 200px;">
                 @else
                     <div class="bg-light rounded-3 py-5">
                         <i class="bi bi-car-front-fill text-primary" style="font-size: 5rem;"></i>
