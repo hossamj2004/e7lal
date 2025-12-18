@@ -15,6 +15,12 @@ class UserCarSavingService extends BaseSavingService
         if (!isset($params['id'])) {
             $params['status'] = 'pending';
             $params['is_active'] = $params['is_active'] ?? false;
+        } else {
+            // For updates, if fair_price is being set, activate this car
+            if (isset($params['fair_price']) && $params['fair_price'] !== null) {
+                $params['is_active'] = true;
+                $params['status'] = 'priced';
+            }
         }
 
         return $params;
@@ -89,13 +95,15 @@ class UserCarSavingService extends BaseSavingService
                 ->where('id', '!=', $model->id)
                 ->update(['is_active' => false]);
         }
+    }
 
-        // If fair_price is set, update status to 'priced'
+    public function afterCommit($model, $params)
+    {
+        // If fair_price was set (pricing operation), deactivate other user cars
         if (isset($params['fair_price']) && $params['fair_price'] !== null) {
-            if ($model->status === 'pending') {
-                $model->status = 'priced';
-                $model->save();
-            }
+            UserCar::where('user_id', $model->user_id)
+                ->where('id', '!=', $model->id)
+                ->update(['is_active' => false]);
         }
     }
 }
