@@ -22,30 +22,43 @@ class UserCarSavingService extends BaseSavingService
 
     public function validate($params)
     {
-        // Required fields validation
-        $required = ['user_id', 'brand', 'model', 'year', 'fuel_type', 'transmission', 'user_expected_price'];
-        foreach ($required as $field) {
-            if (!isset($params[$field]) || empty($params[$field])) {
-                throw new \Exception("الحقل {$field} مطلوب");
+        // For updates (when id is provided), only validate the fields being updated
+        if (isset($params['id'])) {
+            // For updates, we only validate fair_price when pricing
+            if (isset($params['fair_price'])) {
+                if ($params['fair_price'] <= 0) {
+                    throw new \Exception('السعر العادل يجب أن يكون أكبر من صفر');
+                }
             }
+            return; // Skip further validation for updates
         }
 
-        // Year validation
-        if (isset($params['year'])) {
-            $currentYear = date('Y');
-            if ($params['year'] < 1990 || $params['year'] > $currentYear + 1) {
-                throw new \Exception('سنة الصنع غير صحيحة');
+        if (!isset($params['id'])) {
+            // Required fields validation for new records
+            $required = ['user_id', 'brand', 'model', 'year', 'fuel_type', 'transmission', 'user_expected_price'];
+            foreach ($required as $field) {
+                if (!isset($params[$field]) || empty($params[$field])) {
+                    throw new \Exception("الحقل {$field} مطلوب");
+                }
             }
-        }
 
-        // Price validation
-        if (isset($params['user_expected_price']) && $params['user_expected_price'] <= 0) {
-            throw new \Exception('السعر المتوقع يجب أن يكون أكبر من صفر');
-        }
+            // Year validation
+            if (isset($params['year'])) {
+                $currentYear = date('Y');
+                if ($params['year'] < 1990 || $params['year'] > $currentYear + 1) {
+                    throw new \Exception('سنة الصنع غير صحيحة');
+                }
+            }
 
-        // Fair price validation (admin only)
-        if (isset($params['fair_price']) && $params['fair_price'] !== null && $params['fair_price'] <= 0) {
-            throw new \Exception('السعر العادل يجب أن يكون أكبر من صفر');
+            // Price validation
+            if (isset($params['user_expected_price']) && $params['user_expected_price'] <= 0) {
+                throw new \Exception('السعر المتوقع يجب أن يكون أكبر من صفر');
+            }
+
+            // Fair price validation (admin only)
+            if (isset($params['fair_price']) && $params['fair_price'] !== null && $params['fair_price'] <= 0) {
+                throw new \Exception('السعر العادل يجب أن يكون أكبر من صفر');
+            }
         }
     }
 
