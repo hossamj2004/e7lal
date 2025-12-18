@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
             DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         }catch (\Exception $e){}
 
+        // Force HTTPS URLs for all requests
+        URL::forceScheme('https');
     }
 }
