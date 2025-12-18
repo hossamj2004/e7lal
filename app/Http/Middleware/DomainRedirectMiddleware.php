@@ -10,7 +10,8 @@ class DomainRedirectMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->getHost() === 'e7lal-production.up.railway.app') {
+
+        if (!request()->has('dont_redirec') && $request->getHost() === 'e7lal-production.up.railway.app') {
             return redirect()->to(
                 'https://www.e7lal.com' . $request->getRequestUri(),
                 301
