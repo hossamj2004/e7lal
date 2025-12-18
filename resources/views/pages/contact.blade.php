@@ -254,7 +254,7 @@
                     <i class="bi bi-telephone"></i>
                     <h4>اتصل بينا</h4>
                     <p>فريقنا جاهز للرد على استفساراتك</p>
-                    <a href="tel:01000000000">01000000000</a>
+                    <a href="tel:01220437090">01220437090</a>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -262,7 +262,7 @@
                     <i class="bi bi-whatsapp"></i>
                     <h4>واتساب</h4>
                     <p>راسلنا على الواتساب في أي وقت</p>
-                    <a href="https://wa.me/201000000000">01000000000</a>
+                    <a href="https://wa.me/201220437090">01220437090</a>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -301,7 +301,7 @@
                         <i class="bi bi-telephone"></i>
                         <div>
                             <h4>التليفون</h4>
-                            <p>01000000000</p>
+                            <p>01220437090</p>
                         </div>
                     </div>
                     

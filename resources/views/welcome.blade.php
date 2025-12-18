@@ -753,7 +753,7 @@
                         </li>
                         <li>
                             <i class="bi bi-telephone me-2 text-info"></i>
-                            01000000000
+                            01220437090
                         </li>
                         <li>
                             <i class="bi bi-envelope me-2 text-info"></i>
