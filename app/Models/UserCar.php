@@ -21,7 +21,7 @@ class UserCar extends Model
         'user_expected_price',
         'fair_price',
         'description',
-        'image',
+        'images',
         'status',
         'is_active',
         'admin_notes',
@@ -33,6 +33,7 @@ class UserCar extends Model
         'year' => 'integer',
         'mileage' => 'integer',
         'is_active' => 'boolean',
+        'images' => 'array',
     ];
 
     // Relationships
@@ -123,6 +124,22 @@ class UserCar extends Model
         };
     }
 
+    // Image helper methods
+    public function hasImages(): bool
+    {
+        return !empty($this->images) && is_array($this->images);
+    }
+
+    public function getFirstImage(): ?string
+    {
+        return $this->hasImages() ? $this->images[0] : null;
+    }
+
+    public function getImageCount(): int
+    {
+        return $this->hasImages() ? count($this->images) : 0;
+    }
+
     /**
      * Calculate the price difference with a target car
      */
@@ -134,5 +151,3 @@ class UserCar extends Model
         return $car->price - $this->fair_price;
     }
 }
-
-

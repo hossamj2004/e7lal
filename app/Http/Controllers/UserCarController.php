@@ -35,7 +35,8 @@ class UserCarController extends Controller
             'transmission' => 'required|in:automatic,manual',
             'user_expected_price' => 'required|numeric|min:1',
             'description' => 'nullable|string|max:1000',
-            'image_file' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|url',
         ]);
 
         $validated['user_id'] = auth()->id();
@@ -82,5 +83,3 @@ class UserCarController extends Controller
         }
     }
 }
-
-

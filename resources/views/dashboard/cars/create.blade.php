@@ -17,7 +17,7 @@
                 </div>
             @endif
             
-            <form action="{{ route('my-cars.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('my-cars.store') }}" method="POST">
                 @csrf
                 
                 <div class="row g-3">
@@ -83,9 +83,19 @@
                     </div>
                     
                     <div class="col-12">
-                        <label class="form-label fw-semibold">صورة السيارة</label>
-                        <input type="file" name="image_file" class="form-control" accept="image/*">
-                        <small class="text-muted">الحد الأقصى 2 ميجا - الصيغ المسموحة: JPG, PNG</small>
+                        <label class="form-label fw-semibold">صور السيارة (روابط الصور)</label>
+                        <div id="images-container">
+                            <div class="input-group mb-2 image-input-group">
+                                <input type="url" name="images[]" class="form-control" placeholder="https://example.com/car-image.jpg" value="{{ old('images.0') }}">
+                                <button type="button" class="btn btn-outline-danger remove-image" style="display: none;">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="add-image">
+                            <i class="bi bi-plus-circle me-1"></i>إضافة صورة أخرى
+                        </button>
+                        <small class="text-muted d-block mt-1">يمكنك إضافة عدة صور للسيارة من مختلف الزوايا</small>
                     </div>
                 </div>
                 
@@ -96,6 +106,43 @@
                     <a href="{{ route('my-cars.index') }}" class="btn btn-outline-secondary btn-lg me-2">إلغاء</a>
                 </div>
             </form>
+
+            <script>
+                document.getElementById('add-image').addEventListener('click', function() {
+                    const container = document.getElementById('images-container');
+                    const imageGroups = container.querySelectorAll('.image-input-group');
+                    const newGroup = imageGroups[0].cloneNode(true);
+
+                    // Clear the value of the new input
+                    const newInput = newGroup.querySelector('input');
+                    newInput.value = '';
+
+                    // Show remove button for all groups
+                    imageGroups.forEach(group => {
+                        group.querySelector('.remove-image').style.display = 'block';
+                    });
+                    newGroup.querySelector('.remove-image').style.display = 'block';
+
+                    container.appendChild(newGroup);
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('remove-image') || e.target.closest('.remove-image')) {
+                        const imageGroup = e.target.closest('.image-input-group');
+                        const container = document.getElementById('images-container');
+                        const imageGroups = container.querySelectorAll('.image-input-group');
+
+                        if (imageGroups.length > 1) {
+                            imageGroup.remove();
+
+                            // Hide remove button if only one input remains
+                            if (container.querySelectorAll('.image-input-group').length === 1) {
+                                container.querySelector('.remove-image').style.display = 'none';
+                            }
+                        }
+                    }
+                });
+            </script>
         </div>
     </div>
 </div>
