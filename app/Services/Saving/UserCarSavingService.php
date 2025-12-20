@@ -23,11 +23,18 @@ class UserCarSavingService extends BaseSavingService
             }
         }
 
+        if(isset($params['ignore_validations'])) {
+            if(!isset($params['fuel_type'] ))
+                $params['fuel_type'] = 'petrol';
+            if(!isset($params['transmission'] ))
+                $params['transmission'] = 'manual';
+        }
         return $params;
     }
 
     public function validate($params)
     {
+
         // For updates (when id is provided), only validate the fields being updated
         if (isset($params['id'])) {
             // For updates, we only validate fair_price when pricing

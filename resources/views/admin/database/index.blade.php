@@ -498,3 +498,4 @@ function displayQueryResults(results, queryType) {
 }
 </script>
 @endsection
+

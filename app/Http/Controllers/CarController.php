@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Services\Saving\ExchangeRequestSavingService;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
@@ -63,6 +64,26 @@ class CarController extends Controller
 
         return view('pages.car-details', compact('car', 'activeCar', 'difference'));
     }
+
+    public function submitExchangeRequest(Request $request)
+    {
+        $validated = $request->validate([
+            'car_model' => 'required|string|max:255',
+            'car_price' => 'required|numeric|min:0',
+            'desired_price_range' => 'nullable|string',
+            'location' => 'required|string|max:255',
+            'ad_link' => 'nullable|url',
+            'phone' => 'required|string|max:20',
+        ]);
+
+        try {
+            // All saving logic is handled inside the ExchangeRequestSavingService
+            app(ExchangeRequestSavingService::class)->saveAndCommit($validated);
+
+            return redirect()->route('cars')->with('success', 'تم إرسال طلب التبديل بنجاح! سنتواصل معك قريباً.');
+        } catch (\Exception $e) {
+
+            die($e->getMessage());
+        }
+    }
 }
-
-

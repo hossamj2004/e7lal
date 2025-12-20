@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>E7lal.com - بدّل عربيتك</title>
-    
+
     <!-- Bootstrap RTL CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    
+
     <!-- Google Fonts - Cairo for Arabic -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    
+
     <style>
         :root {
             --primary-color: #1a5f7a;
@@ -408,29 +408,143 @@
             text-align: center;
         }
         
+        /* Exchange Form Section */
+        .exchange-form-section {
+            background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 50%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            padding: 120px 0 80px;
+            position: relative;
+        }
+
+        .exchange-form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('/imgs/homepage.jpg') center center;
+            background-size: cover;
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .form-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+
+        .form-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .exchange-form .form-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+        }
+
+        .exchange-form .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .exchange-form .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(87, 197, 182, 0.1);
+        }
+
+        .btn-submit {
+            background: var(--accent-color);
+            color: var(--dark-color);
+            font-weight: 700;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(87, 197, 182, 0.4);
+        }
+
+        .btn-submit:hover {
+            background: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(87, 197, 182, 0.5);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
+            .exchange-form-section {
+                padding: 100px 0 60px;
+                text-align: center;
+            }
+
             .hero-title {
                 font-size: 2.2rem;
             }
-            
+
             .hero-subtitle {
                 font-size: 1.1rem;
             }
-            
-            .btn-hero, .btn-hero-outline {
-                padding: 0.8rem 1.5rem;
+
+            .form-container {
+                padding: 30px 20px;
+                margin-bottom: 2rem;
+            }
+
+            .form-title {
+                font-size: 2.2rem;
+            }
+
+            .form-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .btn-submit {
+                padding: 0.8rem 2rem;
                 font-size: 1rem;
-                display: block;
                 width: 100%;
-                margin-bottom: 15px;
             }
-            
-            .btn-hero-outline {
-                margin-right: 0;
-            }
-            
-            
+
+
             .section-title {
                 font-size: 1.8rem;
             }
@@ -445,11 +559,11 @@
             <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
                 <img src="/imgs/logo.png" alt="E7lal.com Logo">
             </a>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: rgba(255,255,255,0.5);">
                 <i class="bi bi-list text-white fs-2"></i>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -473,78 +587,146 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container hero-content">
+    <!-- Main Exchange Form Section -->
+    <section class="exchange-form-section">
+        <div class="container">
             <div class="row align-items-center">
+                <!-- Left Side - Text -->
                 <div class="col-lg-6 mb-5 mb-lg-0">
-                    <h1 class="hero-title">
-                        بدّل عربيتك القديمة
-                        <br>
-                        <span style="color: var(--accent-color);">بأحسن سعر</span>
-                    </h1>
-                    <p class="hero-subtitle">
-                        مع E7lal.com، تقدر تبدّل عربيتك بعربية أحدث وأحسن بأسعار عادلة وشفافة. 
-                        عملية سهلة وسريعة من غير أي تعقيدات!
-                    </p>
-                    <div class="d-flex flex-wrap">
-                        <a href="{{ route('cars') }}" class="btn btn-hero">
-                            <i class="bi bi-car-front-fill me-2"></i>
-                            بدّل عربيتك
-                        </a>
-                        <a href="{{ route('how-it-works') }}" class="btn btn-hero-outline">
-                            <i class="bi bi-play-circle me-2"></i>
-                            شوف إزاي
-                        </a>
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            بدّل عربيتك القديمة
+                            <br>
+                            <span style="color: var(--accent-color);">بأحسن سعر</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            مع E7lal.com، تقدر تبدّل عربيتك بعربية أحدث وأحسن بأسعار عادلة وشفافة.
+                            عملية سهلة وسريعة من غير أي تعقيدات!
+                        </p>
                     </div>
                 </div>
+
+                <!-- Right Side - Form -->
                 <div class="col-lg-6">
-                    <div class="hero-image">
-                        <img src="/imgs/homepage.jpg" alt="تبديل السيارات">
-                    </div>
+                    <div class="form-container">
+                        <div class="text-center mb-4">
+                            <h2 class="form-title">ابدأ طلب التبديل</h2>
+                            <p class="form-subtitle">اكتب بيانات سيارتك وسنتواصل معك</p>
+                        </div>
+
+                        <form action="{{ route('submit-exchange-request') }}" method="POST" class="exchange-form">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">
+                                        <i class="bi bi-whatsapp me-2"></i>
+                                        رقم تليفونك ؟ <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="01220437090" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="car_model" class="form-label">
+                                        <i class="bi bi-car-front me-2"></i>
+                                        عربيتك نوعها ايه؟ <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="car_model" name="car_model" placeholder="هيونداي فيرنا 2010" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="car_price" class="form-label">
+                                        <i class="bi bi-cash me-2"></i>
+                                        سعر عربيتك كام؟ <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" class="form-control" id="car_price" name="car_price" placeholder="150000" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="desired_price_range" class="form-label">
+                                        <i class="bi bi-graph-up me-2"></i>
+                                        بتدور علي عربية في رينج كام؟
+                                    </label>
+                                    <select class="form-control" id="desired_price_range" name="desired_price_range">
+                                        <option value="">اختر الرينج المطلوب</option>
+                                        <option value="50-200">50–200 ألف</option>
+                                        <option value="200-300">200–300 ألف</option>
+                                        <option value="300-400">300–400 ألف</option>
+                                        <option value="400-500">400–500 ألف</option>
+                                        <option value="500+">أكثر من 500 ألف</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="location" class="form-label">
+                                        <i class="bi bi-geo-alt me-2"></i>
+                                        في أي منطقة عربيتك؟ <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="location" name="location" placeholder="مدينة نصر" required>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="ad_link" class="form-label">
+                                        <i class="bi bi-link-45deg me-2"></i>
+                                        هل فيه لينك لإعلان عربيتك؟ (اختياري)
+                                    </label>
+                                    <input type="url" class="form-control" id="ad_link" name="ad_link" placeholder="https://olx.com.eg/ad/...">
+                                </div>
+                            </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-submit">
+                                <i class="bi bi-send me-2"></i>
+                                احصل على عروض التبديل
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats-section">
+    <!-- Features Section -->
+    <section class="features-section">
         <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-6">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="bi bi-car-front"></i>
+            <div class="text-center mb-5">
+                <h2 class="section-title">ليه تختار E7lal.com؟</h2>
+                <p class="section-subtitle">نقدملك خدمة مميزة وسهلة لتبديل عربيتك</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-cash-coin"></i>
                         </div>
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">عربية متاحة</div>
+                        <h3 class="feature-title">أسعار عادلة</h3>
+                        <p class="feature-text">
+                            بنقيّم عربيتك بسعر السوق الحقيقي ونديك أحسن عرض ممكن.
+                            مفيش رسوم مخفية أو مفاجآت.
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-3 col-6">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="bi bi-people-fill"></i>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
                         </div>
-                        <div class="stat-number">1000+</div>
-                        <div class="stat-label">عميل سعيد</div>
+                        <h3 class="feature-title">ضمان وأمان</h3>
+                        <p class="feature-text">
+                            كل العربيات عندنا متفحوصة ومضمونة.
+                            بنوفرلك ضمان على كل عربية بتشتريها.
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-3 col-6">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="bi bi-arrow-left-right"></i>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="bi bi-lightning-charge"></i>
                         </div>
-                        <div class="stat-number">800+</div>
-                        <div class="stat-label">عملية تبديل</div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-6">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                        <div class="stat-number">4.9</div>
-                        <div class="stat-label">تقييم العملاء</div>
+                        <h3 class="feature-title">سرعة في التنفيذ</h3>
+                        <p class="feature-text">
+                            عملية التبديل بتتم في وقت قياسي.
+                            من المعاينة للتسليم في أقل من 48 ساعة.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -566,7 +748,7 @@
                         </div>
                         <h3 class="feature-title">أسعار عادلة</h3>
                         <p class="feature-text">
-                            بنقيّم عربيتك بسعر السوق الحقيقي ونديك أحسن عرض ممكن. 
+                            بنقيّم عربيتك بسعر السوق الحقيقي ونديك أحسن عرض ممكن.
                             مفيش رسوم مخفية أو مفاجآت.
                         </p>
                     </div>
@@ -578,7 +760,7 @@
                         </div>
                         <h3 class="feature-title">ضمان وأمان</h3>
                         <p class="feature-text">
-                            كل العربيات عندنا متفحوصة ومضمونة. 
+                            كل العربيات عندنا متفحوصة ومضمونة.
                             بنوفرلك ضمان على كل عربية بتشتريها.
                         </p>
                     </div>
@@ -590,119 +772,10 @@
                         </div>
                         <h3 class="feature-title">سرعة في التنفيذ</h3>
                         <p class="feature-text">
-                            عملية التبديل بتتم في وقت قياسي. 
+                            عملية التبديل بتتم في وقت قياسي.
                             من المعاينة للتسليم في أقل من 48 ساعة.
                         </p>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-file-earmark-text"></i>
-                        </div>
-                        <h3 class="feature-title">أوراق قانونية</h3>
-                        <p class="feature-text">
-                            بنتولى كل الإجراءات القانونية ونقل الملكية. 
-                            مش هتحتاج تعمل أي حاجة بنفسك.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-car-front-fill"></i>
-                        </div>
-                        <h3 class="feature-title">تشكيلة كبيرة</h3>
-                        <p class="feature-text">
-                            عندنا مجموعة كبيرة من العربيات المتاحة للتبديل. 
-                            هتلاقي اللي يناسبك بالظبط.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-headset"></i>
-                        </div>
-                        <h3 class="feature-title">دعم مستمر</h3>
-                        <p class="feature-text">
-                            فريق خدمة العملاء موجود دايماً لمساعدتك. 
-                            أي سؤال أو استفسار، احنا هنا.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-title">إزاي بنشتغل؟</h2>
-                <p class="section-subtitle">4 خطوات بسيطة وهتبدّل عربيتك</p>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <div class="step-card">
-                        <div class="step-number">1</div>
-                        <h4 class="step-title">سجّل عربيتك</h4>
-                        <p class="step-text">
-                            ادخل بيانات عربيتك الحالية والحالة بتاعتها عشان نقدر نقيّمها صح.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <div class="step-card">
-                        <div class="step-number">2</div>
-                        <h4 class="step-title">اختار عربيتك الجديدة</h4>
-                        <p class="step-text">
-                            تصفّح العربيات المتاحة واختار اللي يناسب احتياجاتك وميزانيتك.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                    <div class="step-card">
-                        <div class="step-number">3</div>
-                        <h4 class="step-title">معاينة وتقييم</h4>
-                        <p class="step-text">
-                            هنيجي نعاين عربيتك ونقيّمها بسعر عادل ومنصف للطرفين.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="step-card">
-                        <div class="step-number">4</div>
-                        <h4 class="step-title">استلم عربيتك الجديدة</h4>
-                        <p class="step-text">
-                            بعد الموافقة، هننقل الملكية وتستلم عربيتك الجديدة فوراً.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-5">
-                <a href="{{ route('how-it-works') }}" class="btn btn-hero">
-                    <i class="bi bi-info-circle me-2"></i>
-                    اعرف أكتر
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="row justify-content-center text-center">
-                <div class="col-lg-8">
-                    <h2 class="cta-title">جاهز تبدّل عربيتك؟</h2>
-                    <p class="cta-text">
-                        ابدأ دلوقتي واحصل على تقييم مجاني لعربيتك. 
-                        مش هتندم!
-                    </p>
-                    <a href="{{ route('cars') }}" class="btn btn-hero">
-                        <i class="bi bi-rocket-takeoff me-2"></i>
-                        ابدأ التبديل مجاناً
-                    </a>
                 </div>
             </div>
         </div>

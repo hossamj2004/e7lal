@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::get('/cars', [CarController::class, 'index'])->name('cars');
 Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
+Route::post('/submit-exchange-request', [CarController::class, 'submitExchangeRequest'])->name('submit-exchange-request');
 
 Route::get('/how-it-works', function () {
     return view('pages.how-it-works');
@@ -92,4 +93,3 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('users', AdminUserController::class);
    });
 // Database management
-

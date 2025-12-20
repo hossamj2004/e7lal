@@ -21,3 +21,4 @@ class DomainRedirectMiddleware
         return $next($request);
     }
 }
+

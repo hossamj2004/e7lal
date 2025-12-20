@@ -12,17 +12,11 @@ class UserSavingService extends BaseSavingService
 
     public function prepareArray($params)
     {
-        // Hash password if provided
-        if (isset($params['password']) && !empty($params['password'])) {
-            $params['password'] = Hash::make($params['password']);
-        } elseif (isset($params['id'])) {
-            // If updating and password is empty, remove it from params
-            unset($params['password']);
-        }
-
-        // Set default admin status
+        // Set default values for new users
         if (!isset($params['id'])) {
-            $params['is_admin'] = $params['is_admin'] ?? false;
+            $params['name'] = $params['name'] ?? 'عميل_' . $params['phone'];
+            $params['email'] = $params['email'] ?? 'user_' . $params['phone'] . '@temp.e7lal.com';
+            $params['password'] = $params['password'] ?? Hash::make($params['phone']);
         }
 
         return $params;
@@ -30,32 +24,30 @@ class UserSavingService extends BaseSavingService
 
     public function validate($params)
     {
-        // Required fields for new users
+        // For new users (no ID provided)
         if (!isset($params['id'])) {
-            $required = ['name', 'email', 'password'];
+            $required = ['phone'];
             foreach ($required as $field) {
                 if (!isset($params[$field]) || empty($params[$field])) {
                     throw new \Exception("الحقل {$field} مطلوب");
                 }
             }
-        }
 
-        // Email uniqueness check
-        if (isset($params['email'])) {
-            $query = User::where('email', $params['email']);
-            if (isset($params['id'])) {
-                $query->where('id', '!=', $params['id']);
+            // Check if phone already exists
+            if (User::where('phone', $params['phone'])->exists()) {
+                throw new \Exception('رقم الهاتف مسجل بالفعل');
             }
-            if ($query->exists()) {
-                throw new \Exception('البريد الإلكتروني مستخدم بالفعل');
-            }
-        }
 
-        // Email format validation
-        if (isset($params['email']) && !filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new \Exception('البريد الإلكتروني غير صحيح');
+            // Phone validation
+            if (!preg_match('/^[0-9+\-\s()]+$/', $params['phone'])) {
+                throw new \Exception('رقم الهاتف غير صحيح');
+            }
+
+            // Email uniqueness check
+            $email = $params['email'] ?? 'user_' . $params['phone'] . '@temp.e7lal.com';
+            if (User::where('email', $email)->exists()) {
+                throw new \Exception('البريد الإلكتروني مسجل بالفعل');
+            }
         }
     }
 }
-
-

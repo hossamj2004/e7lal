@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         }catch (\Exception $e){}
 
         // Force HTTPS URLs for all requests
-        //if (request()->getHost() === 'e7lal.com')
+        if (request()->getHost() === 'e7lal.com')
         URL::forceScheme('https');
     }
 }
