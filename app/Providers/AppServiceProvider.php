@@ -26,8 +26,9 @@ class AppServiceProvider extends ServiceProvider
             DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         }catch (\Exception $e){}
 
-        // Force HTTPS URLs for all requests
-       // if (request()->getHost() === 'e7lal.com')
-        URL::forceScheme('https');
+        // Force HTTPS URLs for all requests in production
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }

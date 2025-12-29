@@ -736,7 +736,7 @@
                             <div class="card h-100 shadow-sm border-0">
                                 @if($car->hasImages())
                                     <div class="position-relative">
-                                        <img src="{{ asset('storage/' . $car->getFirstImage()) }}"
+                                        <img src="{{ $car->getFirstImage() }}"
                                              class="card-img-top"
                                              alt="{{ $car->full_name }}"
                                              style="height: 200px; object-fit: cover;">

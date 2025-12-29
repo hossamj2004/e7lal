@@ -132,7 +132,7 @@ class UserCar extends Model
 
     public function getFirstImage(): ?string
     {
-        return $this->hasImages() ? $this->images[0] : null;
+        return $this->hasImages() ? asset('storage/' . $this->images[0]) : null;
     }
 
     public function getImageCount(): int
