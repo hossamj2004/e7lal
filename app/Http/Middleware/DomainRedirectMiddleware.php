@@ -17,17 +17,17 @@ class DomainRedirectMiddleware
         }
 
         // Force HTTPS only for the main domain (www.e7lal.com)
-        if (!$request->secure() && app()->environment('production') && $request->getHost() === 'www.e7lal.com') {
-            return redirect()->secure($request->getRequestUri(), 301);
-        }
-
+      //  if (!$request->secure() && app()->environment('production') && $request->getHost() === 'www.e7lal.com') {
+      //      return redirect()->secure($request->getRequestUri(), 301);
+      //  }
+//
         // Add HSTS header for better security
-        if ($request->secure() && app()->environment('production')) {
-            $response = $next($request);
-            $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-            return $response;
-        }
-
+       // if ($request->secure() && app()->environment('production')) {
+       //     $response = $next($request);
+       //     $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+       //     return $response;
+       // }
+//
         return $next($request);
     }
 }

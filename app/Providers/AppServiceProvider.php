@@ -27,8 +27,8 @@ class AppServiceProvider extends ServiceProvider
         }catch (\Exception $e){}
 
         // Force HTTPS URLs for all requests in production
-        if (app()->environment('production')) {
+        //if (app()->environment('production')) {
             URL::forceScheme('https');
-        }
+        //}
     }
 }
