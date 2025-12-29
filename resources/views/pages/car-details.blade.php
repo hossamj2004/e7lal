@@ -125,7 +125,7 @@
                         @if($car->description)
                             <div class="mb-4">
                                 <strong>الوصف:</strong>
-                                <p class="text-muted mt-2">{{ $car->description }}</p>
+                                <div class="text-muted mt-2">{!! $car->description !!}</div>
                             </div>
                         @endif
                         
