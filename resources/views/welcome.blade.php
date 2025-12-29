@@ -453,15 +453,17 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             position: relative;
             z-index: 2;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
 
         .form-title {
-            font-size: 2.8rem;
+            font-size: 2.2rem;
             font-weight: 800;
             color: var(--dark-color);
             margin-bottom: 1rem;
@@ -496,8 +498,8 @@
             background: var(--accent-color);
             color: var(--dark-color);
             font-weight: 700;
-            padding: 1rem 3rem;
-            font-size: 1.2rem;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
             border-radius: 50px;
             border: none;
             transition: all 0.3s ease;
@@ -609,7 +611,7 @@
                 <!-- Right Side - Form -->
                 <div class="col-lg-6">
                     <div class="form-container">
-                        <div class="text-center mb-4">
+                        <div class="text-center mb-3">
                             <h2 class="form-title">ابدأ طلب التبديل</h2>
                             <p class="form-subtitle">اكتب بيانات سيارتك وسنتواصل معك</p>
                         </div>
@@ -633,13 +635,6 @@
                                     <input type="text" class="form-control" id="car_model" name="car_model" placeholder="هيونداي فيرنا 2010" required>
                                 </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="car_price" class="form-label">
-                                        <i class="bi bi-cash me-2"></i>
-                                        سعر عربيتك كام؟ <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="number" class="form-control" id="car_price" name="car_price" placeholder="150000" required>
-                                </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label for="desired_price_range" class="form-label">
@@ -664,16 +659,9 @@
                                     <input type="text" class="form-control" id="location" name="location" placeholder="مدينة نصر" required>
                                 </div>
 
-                                <div class="col-md-6 mb-3">
-                                    <label for="ad_link" class="form-label">
-                                        <i class="bi bi-link-45deg me-2"></i>
-                                        هل فيه لينك لإعلان عربيتك؟ (اختياري)
-                                    </label>
-                                    <input type="url" class="form-control" id="ad_link" name="ad_link" placeholder="https://olx.com.eg/ad/...">
-                                </div>
                             </div>
 
-                        <div class="text-center mt-4">
+                        <div class="text-center mt-3">
                             <button type="submit" class="btn btn-submit">
                                 <i class="bi bi-send me-2"></i>
                                 احصل على عروض التبديل
@@ -733,51 +721,73 @@
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features-section">
+    <!-- Latest Cars Section -->
+    <section class="py-5 bg-light">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-title">ليه تختار E7lal.com؟</h2>
-                <p class="section-subtitle">نقدملك خدمة مميزة وسهلة لتبديل عربيتك</p>
+                <h2 class="section-title">أحدث العربيات المتاحة</h2>
+                <p class="section-subtitle">شوف أحدث العربيات المضافة لموقعنا</p>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-cash-coin"></i>
+
+            @if($latestCars->count() > 0)
+                <div class="row g-4">
+                    @foreach($latestCars as $car)
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card h-100 shadow-sm border-0">
+                                @if($car->hasImages())
+                                    <div class="position-relative">
+                                        <img src="{{ asset('storage/' . $car->getFirstImage()) }}"
+                                             class="card-img-top"
+                                             alt="{{ $car->full_name }}"
+                                             style="height: 200px; object-fit: cover;">
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            {!! $car->status_badge !!}
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="bg-secondary d-flex align-items-center justify-content-center"
+                                         style="height: 200px;">
+                                        <i class="bi bi-car-front text-white fs-1"></i>
+                                    </div>
+                                @endif
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title fw-bold text-dark">{{ $car->full_name }}</h5>
+                                    <p class="card-text text-muted small mb-2">
+                                        <i class="bi bi-gear me-1"></i>{{ $car->transmission_arabic }}
+                                        <span class="mx-2">•</span>
+                                        <i class="bi bi-fuel-pump me-1"></i>{{ $car->fuel_type_arabic }}
+                                        <span class="mx-2">•</span>
+                                        <i class="bi bi-speedometer me-1"></i>{{ number_format($car->mileage) }} كم
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="h5 text-primary fw-bold mb-0">{{ $car->formatted_price }}</span>
+                                            <a href="{{ route('cars.show', $car) }}" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-eye me-1"></i>
+                                                عرض التفاصيل
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="feature-title">أسعار عادلة</h3>
-                        <p class="feature-text">
-                            بنقيّم عربيتك بسعر السوق الحقيقي ونديك أحسن عرض ممكن.
-                            مفيش رسوم مخفية أو مفاجآت.
-                        </p>
-                    </div>
+                    @endforeach
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-shield-check"></i>
-                        </div>
-                        <h3 class="feature-title">ضمان وأمان</h3>
-                        <p class="feature-text">
-                            كل العربيات عندنا متفحوصة ومضمونة.
-                            بنوفرلك ضمان على كل عربية بتشتريها.
-                        </p>
-                    </div>
+
+                <div class="text-center mt-4">
+                    <a href="{{ route('cars') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-grid me-2"></i>
+                        عرض المزيد من العربيات
+                    </a>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="bi bi-lightning-charge"></i>
-                        </div>
-                        <h3 class="feature-title">سرعة في التنفيذ</h3>
-                        <p class="feature-text">
-                            عملية التبديل بتتم في وقت قياسي.
-                            من المعاينة للتسليم في أقل من 48 ساعة.
-                        </p>
-                    </div>
+            @else
+                <div class="text-center py-5">
+                    <i class="bi bi-car-front text-muted" style="font-size: 4rem;"></i>
+                    <h4 class="text-muted mt-3">لا توجد عربيات متاحة حالياً</h4>
+                    <p class="text-muted">تأكد من زيارتنا لاحقاً للعثور على أفضل العروض</p>
                 </div>
-            </div>
+            @endif
         </div>
     </section>
 

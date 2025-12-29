@@ -31,8 +31,6 @@ class ExchangeRequestSavingService extends BaseSavingService
             'brand' => explode(' ', $params['car_model'])[0] ?? $params['car_model'],
             'model' => $params['car_model'],
             'year' => date('Y'),
-            'user_expected_price' => $params['car_price'],
-            'fair_price' => $params['car_price'],
             'location' => $params['location'],
             'description' => 'تم الإرسال من خلال نموذج طلب التبديل',
         ];
@@ -43,7 +41,7 @@ class ExchangeRequestSavingService extends BaseSavingService
     public function validate($params)
     {
         // Required fields validation for new records
-        $required = ['car_model', 'car_price', 'location', 'phone'];
+        $required = ['car_model', 'location', 'phone'];
         foreach ($required as $field) {
             if (!isset($params[$field]) || empty($params[$field])) {
                 throw new \Exception("الحقل {$field} مطلوب");
@@ -54,18 +52,6 @@ class ExchangeRequestSavingService extends BaseSavingService
         if (isset($params['phone'])) {
             if (!preg_match('/^[0-9+\-\s()]+$/', $params['phone'])) {
                 throw new \Exception('رقم الهاتف غير صحيح');
-            }
-        }
-
-        // Price validation
-        if (isset($params['car_price']) && $params['car_price'] <= 0) {
-            throw new \Exception('سعر السيارة يجب أن يكون أكبر من صفر');
-        }
-
-        // URL validation for ad_link if provided
-        if (isset($params['ad_link']) && !empty($params['ad_link'])) {
-            if (!filter_var($params['ad_link'], FILTER_VALIDATE_URL)) {
-                throw new \Exception('رابط الإعلان غير صحيح');
             }
         }
 

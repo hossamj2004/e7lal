@@ -11,11 +11,17 @@ use App\Http\Controllers\Admin\AdminUserCarController;
 use App\Http\Controllers\Admin\AdminOfferController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDatabaseController;
+use App\Models\Car;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
 Route::get('/', function () {
-    return view('welcome');
+    $latestCars = Car::where('status', 'available')
+        ->orderBy('created_at', 'desc')
+        ->limit(6)
+        ->get();
+
+    return view('welcome', compact('latestCars'));
 })->name('home');
 
 Route::get('/cars', [CarController::class, 'index'])->name('cars');

@@ -69,10 +69,8 @@ class CarController extends Controller
     {
         $validated = $request->validate([
             'car_model' => 'required|string|max:255',
-            'car_price' => 'required|numeric|min:0',
             'desired_price_range' => 'nullable|string',
             'location' => 'required|string|max:255',
-            'ad_link' => 'nullable|url',
             'phone' => 'required|string|max:20',
         ]);
 
