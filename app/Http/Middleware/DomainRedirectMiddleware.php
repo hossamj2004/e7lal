@@ -10,23 +10,22 @@ class DomainRedirectMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // Force HTTPS for all requests in production
-        if (!$request->secure() && app()->environment('production')) {
+        // Domain redirect for Railway app
+        if (!request()->has('dont_redirec') && $request->getHost() === 'e7lal-production.up.railway.app') {
+            $url = 'https://www.e7lal.com' . $request->getRequestUri();
+            return redirect()->to($url, 301);
+        }
+
+        // Force HTTPS only for the main domain (www.e7lal.com)
+        if (!$request->secure() && app()->environment('production') && $request->getHost() === 'www.e7lal.com') {
             return redirect()->secure($request->getRequestUri(), 301);
         }
 
-        // Add HSTS header for better security (only for HTTPS requests)
+        // Add HSTS header for better security
         if ($request->secure() && app()->environment('production')) {
             $response = $next($request);
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
             return $response;
-        }
-
-        if (!request()->has('dont_redirec') && $request->getHost() === 'e7lal-production.up.railway.app') {
-            return redirect()->to(
-                'https://www.e7lal.com' . $request->getRequestUri(),
-                301
-            );
         }
 
         return $next($request);
