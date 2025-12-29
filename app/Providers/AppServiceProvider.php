@@ -21,14 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        URL::forceScheme('https');
         //
         try {
             DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         }catch (\Exception $e){}
 
-        // Force HTTPS URLs for all generated URLs in production
-        if (app()->environment('production')) {
-            URL::forceScheme('https');
-        }
     }
 }
