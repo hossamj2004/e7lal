@@ -47,8 +47,8 @@ class UserCarSavingService extends BaseSavingService
         }
 
         if (!isset($params['id'])) {
-            // Required fields validation for new records
-            $required = ['user_id', 'brand', 'model', 'year', 'fuel_type', 'transmission', 'user_expected_price'];
+            // Required fields validation for new records (user_expected_price is optional now)
+            $required = ['user_id', 'brand', 'model', 'year', 'fuel_type', 'transmission'];
             foreach ($required as $field) {
                 if (!isset($params[$field]) || empty($params[$field])) {
                     throw new \Exception("الحقل {$field} مطلوب");
@@ -63,8 +63,8 @@ class UserCarSavingService extends BaseSavingService
                 }
             }
 
-            // Price validation
-            if (isset($params['user_expected_price']) && $params['user_expected_price'] <= 0) {
+            // Price validation (only if provided)
+            if (isset($params['user_expected_price']) && $params['user_expected_price'] !== null && $params['user_expected_price'] <= 0) {
                 throw new \Exception('السعر المتوقع يجب أن يكون أكبر من صفر');
             }
 
