@@ -97,7 +97,11 @@ class Car extends Model
 
     public function getFirstImage(): ?string
     {
-        return $this->hasImages() ? $this->images[0] : null;
+        if (!$this->hasImages()) {
+            return null;
+        }
+        // Return image URL directly, ensure HTTPS
+        return str_replace('http://', 'https://', $this->images[0]);
     }
 
     public function getImageCount(): int
