@@ -14,7 +14,20 @@ class ExchangeRequestSavingService extends BaseSavingService
 
     public function prepareArray($params)
     {
-        // Prepare related data arrays for saving
+        // Handle admin updates (only admin_notes and status changes)
+        if (isset($params['id']) && (!isset($params['phone']) || !isset($params['car_model']))) {
+            // This is an admin update - only handle admin_notes and status
+            // Set responded_at when status changes from pending to in_progress
+            if (isset($params['status']) && isset($params['id'])) {
+                $existingRequest = ExchangeRequest::find($params['id']);
+                if ($existingRequest && $existingRequest->status === 'pending' && $params['status'] === 'in_progress') {
+                    $params['responded_at'] = now();
+                }
+            }
+            return $params;
+        }
+
+        // Prepare related data arrays for saving (frontend form submissions)
         $user = User::where('phone', $params['phone'])->first();
 
         if (!$user) {
@@ -40,6 +53,23 @@ class ExchangeRequestSavingService extends BaseSavingService
 
     public function validate($params)
     {
+        // Handle admin updates (only admin_notes and status changes)
+        if (isset($params['id']) && (!isset($params['phone']) || !isset($params['car_model']))) {
+            // Admin update validation
+            if (isset($params['status'])) {
+                $allowedStatuses = ['pending', 'in_progress', 'completed', 'cancelled'];
+                if (!in_array($params['status'], $allowedStatuses)) {
+                    throw new \Exception('الحالة غير صحيحة');
+                }
+            }
+
+            if (isset($params['admin_notes']) && strlen($params['admin_notes']) > 1000) {
+                throw new \Exception('الملاحظات يجب ألا تتجاوز 1000 حرف');
+            }
+
+            return; // Skip other validations for admin updates
+        }
+
         // Required fields validation for new records
         $required = ['car_model', 'location', 'phone'];
         foreach ($required as $field) {
@@ -66,6 +96,11 @@ class ExchangeRequestSavingService extends BaseSavingService
 
     public function saveRelatedData($model, $params)
     {
+        // Skip related data saving for admin updates
+        if (isset($params['id']) && (!isset($params['phone']) || !isset($params['car_model']))) {
+            return; // Admin update - no related data to save
+        }
+
         $userId = null;
 
         // Save user if prepared

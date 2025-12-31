@@ -63,6 +63,65 @@
     </div>
 </div>
 
+<!-- Exchange Requests Stats -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <i class="bi bi-arrow-left-right"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">{{ $stats['exchange_requests']['total'] }}</h3>
+                    <small class="text-muted">طلبات تبديل</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                    <i class="bi bi-clock"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">{{ $stats['exchange_requests']['pending'] }}</h3>
+                    <small class="text-muted">في الانتظار</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                    <i class="bi bi-gear"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">{{ $stats['exchange_requests']['in_progress'] }}</h3>
+                    <small class="text-muted">قيد المعالجة</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-card">
+            <div class="d-flex align-items-center gap-3">
+                <div class="icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                    <i class="bi bi-star"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold mb-0">{{ $stats['exchange_requests']['favorites'] }}</h3>
+                    <small class="text-muted">المفضلة</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row g-4">
     <!-- Pending User Cars -->
     <div class="col-lg-6">
@@ -110,6 +169,52 @@
                 </div>
             @empty
                 <p class="text-muted text-center py-4">لا توجد عروض معلقة</p>
+            @endforelse
+        </div>
+    </div>
+</div>
+
+<!-- Pending Exchange Requests -->
+<div class="row g-4 mt-4">
+    <div class="col-12">
+        <div class="table-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0"><i class="bi bi-arrow-left-right text-info me-2"></i>طلبات تبديل جديدة</h5>
+                <a href="{{ route('admin.exchange-requests.index') }}" class="btn btn-sm btn-outline-primary">عرض الكل</a>
+            </div>
+
+            @forelse($pendingExchangeRequests as $request)
+                <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+                    <div class="d-flex align-items-center gap-3">
+                        @if($request->is_favorite)
+                            <i class="bi bi-star-fill text-warning"></i>
+                        @endif
+                        <div>
+                            <h6 class="mb-0">{{ $request->car_model }}</h6>
+                            <small class="text-muted">
+                                @if($request->user)
+                                    {{ $request->user->name }} -
+                                @else
+                                    زائر -
+                                @endif
+                                {{ $request->phone }} - {{ $request->location }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="tel:{{ $request->phone }}" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-telephone"></i>
+                        </a>
+                        <a href="https://wa.me/{{ $request->phone }}" target="_blank" class="btn btn-sm btn-success">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="{{ route('admin.exchange-requests.show', $request) }}" class="btn btn-sm btn-primary-custom">
+                            <i class="bi bi-eye"></i> عرض
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <p class="text-muted text-center py-4">لا توجد طلبات تبديل معلقة</p>
             @endforelse
         </div>
     </div>

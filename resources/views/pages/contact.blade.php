@@ -293,7 +293,7 @@
                         <i class="bi bi-geo-alt"></i>
                         <div>
                             <h4>العنوان</h4>
-                            <p>القاهرة، مصر - شارع التحرير</p>
+                            <p>القطامية بجوار بنك الاسكان و التعمير</p>
                         </div>
                     </div>
                     
@@ -336,44 +336,57 @@
                     <h3>ابعتلنا رسالة</h3>
                     <p>املأ النموذج وهنرد عليك في أقرب وقت</p>
                     
-                    <form>
+                    <form action="{{ route('contact.submit') }}" method="POST">
+                        @csrf
+                        @if(session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
+                        @if($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>الاسم الكامل</label>
-                                    <input type="text" class="form-control" placeholder="اكتب اسمك">
+                                    <label>الاسم الكامل <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" class="form-control" placeholder="اكتب اسمك" value="{{ old('name') }}" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>رقم الموبايل</label>
-                                    <input type="tel" class="form-control" placeholder="01xxxxxxxxx">
+                                    <label>رقم الموبايل <span class="text-danger">*</span></label>
+                                    <input type="tel" name="phone" class="form-control" placeholder="01xxxxxxxxx" value="{{ old('phone') }}" required>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label>البريد الإلكتروني</label>
-                            <input type="email" class="form-control" placeholder="example@email.com">
+                            <label>البريد الإلكتروني <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" placeholder="example@email.com" value="{{ old('email') }}" required>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label>الموضوع</label>
-                            <select class="form-control">
+                            <label>الموضوع <span class="text-danger">*</span></label>
+                            <select name="subject" class="form-control" required>
                                 <option value="">اختار الموضوع</option>
-                                <option>استفسار عن تبديل عربية</option>
-                                <option>طلب تقييم مجاني</option>
-                                <option>شكوى أو اقتراح</option>
-                                <option>استفسار عام</option>
-                                <option>موضوع آخر</option>
+                                <option value="استفسار عن تبديل عربية" {{ old('subject') == 'استفسار عن تبديل عربية' ? 'selected' : '' }}>استفسار عن تبديل عربية</option>
+                                <option value="طلب تقييم مجاني" {{ old('subject') == 'طلب تقييم مجاني' ? 'selected' : '' }}>طلب تقييم مجاني</option>
+                                <option value="شكوى أو اقتراح" {{ old('subject') == 'شكوى أو اقتراح' ? 'selected' : '' }}>شكوى أو اقتراح</option>
+                                <option value="استفسار عام" {{ old('subject') == 'استفسار عام' ? 'selected' : '' }}>استفسار عام</option>
+                                <option value="موضوع آخر" {{ old('subject') == 'موضوع آخر' ? 'selected' : '' }}>موضوع آخر</option>
                             </select>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label>الرسالة</label>
-                            <textarea class="form-control" placeholder="اكتب رسالتك هنا..."></textarea>
+                            <label>الرسالة <span class="text-danger">*</span></label>
+                            <textarea name="message" class="form-control" placeholder="اكتب رسالتك هنا..." required>{{ old('message') }}</textarea>
                         </div>
-                        
+
                         <button type="submit" class="btn btn-submit">
                             <i class="bi bi-send me-2"></i>
                             ابعت الرسالة

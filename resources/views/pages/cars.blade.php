@@ -2,6 +2,27 @@
 
 @section('title', 'السيارات المتاحة - E7lal.com')
 
+@push('styles')
+<style>
+    /* Car card hover effects */
+    .hover-overlay {
+        transition: opacity 0.3s ease;
+    }
+    .card:hover .hover-overlay {
+        opacity: 1 !important;
+    }
+    .card:hover img {
+        transform: scale(1.05);
+    }
+    .inset-0 {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+</style>
+@endpush
+
 @section('content')
 <!-- Page Header -->
 <section class="page-header" style="padding-top: 120px; padding-bottom: 40px;">
@@ -35,55 +56,6 @@
             </div>
         @endif
 
-        <!-- Filters -->
-        <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px;">
-            <div class="card-body">
-                <form method="GET" class="row g-3 align-items-end">
-                    <div class="col-md-3">
-                        <label class="form-label small text-muted">الماركة</label>
-                        <select name="brand" class="form-select">
-                            <option value="">الكل</option>
-                            @foreach($brands as $brand)
-                                <option value="{{ $brand }}" {{ request('brand') == $brand ? 'selected' : '' }}>{{ $brand }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted">نوع الوقود</label>
-                        <select name="fuel_type" class="form-select">
-                            <option value="">الكل</option>
-                            <option value="petrol" {{ request('fuel_type') == 'petrol' ? 'selected' : '' }}>بنزين</option>
-                            <option value="diesel" {{ request('fuel_type') == 'diesel' ? 'selected' : '' }}>ديزل</option>
-                            <option value="hybrid" {{ request('fuel_type') == 'hybrid' ? 'selected' : '' }}>هايبرد</option>
-                            <option value="electric" {{ request('fuel_type') == 'electric' ? 'selected' : '' }}>كهرباء</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted">الحد الأدنى</label>
-                        <input type="number" name="price_min" class="form-control" value="{{ request('price_min') }}" placeholder="من">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted">الحد الأقصى</label>
-                        <input type="number" name="price_max" class="form-control" value="{{ request('price_max') }}" placeholder="إلى">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted">الترتيب</label>
-                        <select name="sort" class="form-select">
-                            <option value="-created_at" {{ request('sort') == '-created_at' ? 'selected' : '' }}>الأحدث</option>
-                            <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>السعر (الأقل)</option>
-                            <option value="-price" {{ request('sort') == '-price' ? 'selected' : '' }}>السعر (الأعلى)</option>
-                            <option value="-year" {{ request('sort') == '-year' ? 'selected' : '' }}>السنة (الأحدث)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="submit" class="btn btn-primary-custom w-100">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <!-- Cars Grid -->
         <div class="row g-4">
 
@@ -91,11 +63,24 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 border-0 shadow-sm" style="border-radius: 20px; overflow: hidden;">
                         @if($car->hasImages())
-                            <img src="{{ $car->getFirstImage() }}" class="card-img-top" alt="{{ $car->full_name }}" style="height: 200px; object-fit: cover;">
+                            <a href="{{ route('cars.show', $car) }}" class="text-decoration-none">
+                                <div style="position: relative; cursor: pointer;">
+                                    <img src="{{ $car->getFirstImage() }}"
+                                         class="card-img-top"
+                                         alt="{{ $car->full_name }}"
+                                         style="height: 200px; object-fit: cover; transition: transform 0.2s;">
+                                    <div class="position-absolute inset-0 bg-dark bg-opacity-25 d-flex align-items-center justify-content-center opacity-0 hover-overlay">
+                                        <i class="bi bi-eye-fill text-white fs-3"></i>
+                                    </div>
+                                </div>
+                            </a>
                         @else
-                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                <i class="bi bi-car-front-fill text-muted" style="font-size: 5rem;"></i>
-                            </div>
+                            <a href="{{ route('cars.show', $car) }}" class="text-decoration-none">
+                                <div class="bg-light d-flex align-items-center justify-content-center"
+                                     style="height: 200px; cursor: pointer;">
+                                    <i class="bi bi-car-front-fill text-muted" style="font-size: 5rem;"></i>
+                                </div>
+                            </a>
                         @endif
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">

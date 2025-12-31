@@ -21,11 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS for all generated URLs
-        URL::forceScheme('https');
-        
+
         // Force root URL to use HTTPS in production
         if (app()->environment('production')) {
+            URL::forceScheme('https');
             URL::forceRootUrl('https://www.e7lal.com');
         }
 

@@ -22,27 +22,27 @@
             --dark-color: #0b2447;
             --light-bg: #f8f9fa;
         }
-        
+
         * {
             font-family: 'Cairo', sans-serif;
         }
-        
+
         body {
             background-color: var(--light-bg);
         }
-        
+
         /* Navbar */
         .navbar {
             background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 100%);
             padding: 1rem 0;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        
+
         .navbar-brand img {
             height: 55px;
             border-radius: 8px;
         }
-        
+
         .nav-link {
             color: rgba(255,255,255,0.9) !important;
             font-weight: 500;
@@ -50,12 +50,12 @@
             transition: all 0.3s ease;
             border-radius: 8px;
         }
-        
+
         .nav-link:hover, .nav-link.active {
             color: #fff !important;
             background: rgba(255,255,255,0.1);
         }
-        
+
         .btn-navbar {
             background: var(--accent-color);
             color: var(--dark-color);
@@ -65,13 +65,13 @@
             border: none;
             transition: all 0.3s ease;
         }
-        
+
         .btn-navbar:hover {
             background: #fff;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
+
         /* Hero Section */
         .hero-section {
             background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 50%, var(--secondary-color) 100%);
@@ -79,7 +79,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .hero-section::before {
             content: '';
             position: absolute;
@@ -91,13 +91,13 @@
             background-size: cover;
             opacity: 0.15;
         }
-        
+
         .hero-content {
             position: relative;
             z-index: 2;
             padding: 100px 0;
         }
-        
+
         .hero-title {
             font-size: 3.5rem;
             font-weight: 800;
@@ -105,14 +105,14 @@
             margin-bottom: 1.5rem;
             line-height: 1.3;
         }
-        
+
         .hero-subtitle {
             font-size: 1.4rem;
             color: rgba(255,255,255,0.9);
             margin-bottom: 2.5rem;
             line-height: 1.8;
         }
-        
+
         .btn-hero {
             background: var(--accent-color);
             color: var(--dark-color);
@@ -124,13 +124,13 @@
             transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(87, 197, 182, 0.4);
         }
-        
+
         .btn-hero:hover {
             background: #fff;
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(87, 197, 182, 0.5);
         }
-        
+
         .btn-hero-outline {
             background: transparent;
             color: #fff;
@@ -142,24 +142,24 @@
             margin-right: 1rem;
             transition: all 0.3s ease;
         }
-        
+
         .btn-hero-outline:hover {
             background: rgba(255,255,255,0.1);
             border-color: #fff;
             color: #fff;
         }
-        
+
         .hero-image {
             position: relative;
             z-index: 2;
         }
-        
+
         .hero-image img {
             width: 100%;
             border-radius: 20px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.3);
         }
-        
+
         /* Stats Section */
         .stats-section {
             background: #fff;
@@ -169,18 +169,18 @@
             z-index: 3;
             border-radius: 30px 30px 0 0;
         }
-        
+
         .stat-card {
             text-align: center;
             padding: 30px 20px;
             border-radius: 15px;
             transition: all 0.3s ease;
         }
-        
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .stat-icon {
             width: 80px;
             height: 80px;
@@ -193,37 +193,37 @@
             font-size: 2rem;
             color: #fff;
         }
-        
+
         .stat-number {
             font-size: 2.5rem;
             font-weight: 800;
             color: var(--dark-color);
         }
-        
+
         .stat-label {
             color: #666;
             font-size: 1.1rem;
         }
-        
+
         /* Features Section */
         .features-section {
             padding: 100px 0;
             background: #fff;
         }
-        
+
         .section-title {
             font-size: 2.5rem;
             font-weight: 800;
             color: var(--dark-color);
             margin-bottom: 1rem;
         }
-        
+
         .section-subtitle {
             color: #666;
             font-size: 1.2rem;
             margin-bottom: 3rem;
         }
-        
+
         .feature-card {
             background: var(--light-bg);
             padding: 40px 30px;
@@ -233,13 +233,13 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
         }
-        
+
         .feature-card:hover {
             border-color: var(--accent-color);
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-        
+
         .feature-icon {
             width: 90px;
             height: 90px;
@@ -252,31 +252,31 @@
             font-size: 2.5rem;
             color: #fff;
         }
-        
+
         .feature-title {
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--dark-color);
             margin-bottom: 15px;
         }
-        
+
         .feature-text {
             color: #666;
             line-height: 1.8;
         }
-        
+
         /* How It Works */
         .how-it-works {
             padding: 100px 0;
             background: linear-gradient(180deg, var(--light-bg) 0%, #fff 100%);
         }
-        
+
         .step-card {
             position: relative;
             padding: 30px;
             text-align: center;
         }
-        
+
         .step-number {
             width: 60px;
             height: 60px;
@@ -290,20 +290,20 @@
             font-weight: 800;
             color: #fff;
         }
-        
+
         .step-title {
             font-size: 1.3rem;
             font-weight: 700;
             color: var(--dark-color);
             margin-bottom: 15px;
         }
-        
+
         .step-text {
             color: #666;
             line-height: 1.7;
         }
-        
-        
+
+
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 100%);
@@ -311,7 +311,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .cta-section::before {
             content: '';
             position: absolute;
@@ -323,66 +323,66 @@
             left: -200px;
             opacity: 0.1;
         }
-        
+
         .cta-title {
             font-size: 2.5rem;
             font-weight: 800;
             color: #fff;
             margin-bottom: 1.5rem;
         }
-        
+
         .cta-text {
             color: rgba(255,255,255,0.9);
             font-size: 1.2rem;
             margin-bottom: 2rem;
         }
-        
+
         /* Footer */
         .footer {
             background: var(--dark-color);
             padding: 60px 0 30px;
             color: rgba(255,255,255,0.8);
         }
-        
+
         .footer-logo img {
             height: 50px;
             border-radius: 8px;
             margin-bottom: 15px;
         }
-        
+
         .footer-text {
             color: rgba(255,255,255,0.7);
             line-height: 1.8;
             margin-top: 15px;
         }
-        
+
         .footer-title {
             color: #fff;
             font-weight: 700;
             font-size: 1.2rem;
             margin-bottom: 25px;
         }
-        
+
         .footer-links {
             list-style: none;
             padding: 0;
         }
-        
+
         .footer-links li {
             margin-bottom: 12px;
         }
-        
+
         .footer-links a {
             color: rgba(255,255,255,0.7);
             text-decoration: none;
             transition: all 0.3s ease;
         }
-        
+
         .footer-links a:hover {
             color: var(--accent-color);
             padding-right: 10px;
         }
-        
+
         .social-links a {
             display: inline-flex;
             align-items: center;
@@ -395,19 +395,36 @@
             margin-left: 10px;
             transition: all 0.3s ease;
         }
-        
+
         .social-links a:hover {
             background: var(--accent-color);
             transform: translateY(-3px);
         }
-        
+
         .footer-bottom {
             border-top: 1px solid rgba(255,255,255,0.1);
             padding-top: 30px;
             margin-top: 40px;
             text-align: center;
         }
-        
+
+        /* Car card hover effects */
+        .hover-overlay {
+            transition: opacity 0.3s ease;
+        }
+        .card:hover .hover-overlay {
+            opacity: 1 !important;
+        }
+        .card:hover img {
+            transform: scale(1.05);
+        }
+        .inset-0 {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
         /* Exchange Form Section */
         .exchange-form-section {
             background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 50%, var(--secondary-color) 100%);
@@ -584,7 +601,7 @@
                         <a class="nav-link" href="{{ route('contact') }}">تواصل معانا</a>
                     </li>
                 </ul>
-                <a href="{{ route('cars') }}" class="btn btn-navbar">ابدأ دلوقتي</a>
+                <a href="{{ route('register-now') }}" class="btn btn-navbar">سجل الان</a>
             </div>
         </div>
     </nav>
@@ -639,7 +656,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="desired_price_range" class="form-label">
                                         <i class="bi bi-graph-up me-2"></i>
-                                        بتدور علي عربية في رينج كام؟
+                                        بتدور علي عربية في بكام؟
                                     </label>
                                     <select class="form-control" id="desired_price_range" name="desired_price_range">
                                         <option value="">اختر الرينج المطلوب</option>
@@ -735,20 +752,27 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="card h-100 shadow-sm border-0">
                                 @if($car->hasImages())
-                                    <div class="position-relative">
-                                        <img src="{{ $car->getFirstImage() }}"
-                                             class="card-img-top"
-                                             alt="{{ $car->full_name }}"
-                                             style="height: 200px; object-fit: cover;">
-                                        <div class="position-absolute top-0 end-0 m-2">
-                                            {!! $car->status_badge !!}
+                                    <a href="{{ route('cars.show', $car) }}" class="text-decoration-none">
+                                        <div class="position-relative" style="cursor: pointer;">
+                                            <img src="{{ $car->getFirstImage() }}"
+                                                 class="card-img-top"
+                                                 alt="{{ $car->full_name }}"
+                                                 style="height: 200px; object-fit: cover; transition: transform 0.2s;">
+                                            <div class="position-absolute top-0 end-0 m-2">
+                                                {!! $car->status_badge !!}
+                                            </div>
+                                            <div class="position-absolute inset-0 bg-dark bg-opacity-25 d-flex align-items-center justify-content-center opacity-0 hover-overlay">
+                                                <i class="bi bi-eye-fill text-white fs-3"></i>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 @else
-                                    <div class="bg-secondary d-flex align-items-center justify-content-center"
-                                         style="height: 200px;">
-                                        <i class="bi bi-car-front text-white fs-1"></i>
-                                    </div>
+                                    <a href="{{ route('cars.show', $car) }}" class="text-decoration-none">
+                                        <div class="bg-secondary d-flex align-items-center justify-content-center"
+                                             style="height: 200px; cursor: pointer;">
+                                            <i class="bi bi-car-front text-white fs-1"></i>
+                                        </div>
+                                    </a>
                                 @endif
 
                                 <div class="card-body d-flex flex-column">
@@ -800,7 +824,7 @@
                         <img src="/imgs/logo.png" alt="E7lal.com">
                     </div>
                     <p class="footer-text">
-                        منصة تبديل السيارات الأولى في مصر. 
+                        منصة تبديل السيارات الأولى في مصر.
                         بنساعدك تبدّل عربيتك القديمة بأحدث وأحسن بأسعار عادلة.
                     </p>
                     <div class="social-links mt-4">
@@ -833,7 +857,7 @@
                     <ul class="footer-links">
                         <li>
                             <i class="bi bi-geo-alt me-2 text-info"></i>
-                            القاهرة، مصر
+                            القطامية بجوار بنك الاسكان و التعمير
                         </li>
                         <li>
                             <i class="bi bi-telephone me-2 text-info"></i>

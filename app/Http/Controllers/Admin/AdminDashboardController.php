@@ -7,6 +7,7 @@ use App\Models\Car;
 use App\Models\User;
 use App\Models\UserCar;
 use App\Models\Offer;
+use App\Models\ExchangeRequest;
 
 class AdminDashboardController extends Controller
 {
@@ -18,6 +19,12 @@ class AdminDashboardController extends Controller
             'total_users' => User::where('is_admin', false)->count(),
             'pending_user_cars' => UserCar::where('status', 'pending')->count(),
             'pending_offers' => Offer::where('status', 'pending')->count(),
+            'exchange_requests' => [
+                'total' => ExchangeRequest::count(),
+                'pending' => ExchangeRequest::where('status', 'pending')->count(),
+                'in_progress' => ExchangeRequest::where('status', 'in_progress')->count(),
+                'favorites' => ExchangeRequest::where('is_favorite', true)->count(),
+            ],
         ];
 
         // Recent pending user cars
@@ -36,8 +43,13 @@ class AdminDashboardController extends Controller
             'limit' => 5
         ]);
 
-        return view('admin.dashboard', compact('stats', 'pendingUserCars', 'pendingOffers'));
+        // Recent pending exchange requests
+        $pendingExchangeRequests = ExchangeRequest::with('user')
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'pendingUserCars', 'pendingOffers', 'pendingExchangeRequests'));
     }
 }
-
-

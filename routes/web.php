@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\UserCarController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\AdminUserCarController;
 use App\Http\Controllers\Admin\AdminOfferController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDatabaseController;
+use App\Http\Controllers\Admin\AdminExchangeRequestController;
 use App\Models\Car;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +30,10 @@ Route::get('/cars', [CarController::class, 'index'])->name('cars');
 Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
 Route::post('/submit-exchange-request', [CarController::class, 'submitExchangeRequest'])->name('submit-exchange-request');
 
+Route::get('/register-now', function () {
+    return view('pages.register-now');
+})->name('register-now');
+
 Route::get('/how-it-works', function () {
     return view('pages.how-it-works');
 })->name('how-it-works');
@@ -36,9 +42,8 @@ Route::get('/about', function () {
     return view('pages.about');
 })->name('about');
 
-Route::get('/contact', function () {
-    return view('pages.contact');
-})->name('contact');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Auth routes
 Route::middleware('guest')->group(function () {
@@ -88,6 +93,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/offers/{offer}', [AdminOfferController::class, 'show'])->name('offers.show');
     Route::post('/offers/{offer}/accept', [AdminOfferController::class, 'accept'])->name('offers.accept');
     Route::post('/offers/{offer}/reject', [AdminOfferController::class, 'reject'])->name('offers.reject');
+
+    // Exchange requests management
+    Route::resource('exchange-requests', AdminExchangeRequestController::class);
+    Route::post('/exchange-requests/{exchangeRequest}/toggle-favorite', [AdminExchangeRequestController::class, 'toggleFavorite'])->name('exchange-requests.toggle-favorite');
+    Route::get('/exchange-requests-export', [AdminExchangeRequestController::class, 'export'])->name('exchange-requests.export');
 
     Route::get('/database', [AdminDatabaseController::class, 'index'])->name('database.index');
     Route::post('/database/run-query', [AdminDatabaseController::class, 'runQuery'])->name('database.run-query');
