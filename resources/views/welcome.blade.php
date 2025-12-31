@@ -656,7 +656,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="desired_price_range" class="form-label">
                                         <i class="bi bi-graph-up me-2"></i>
-                                        بتدور علي عربية في بكام؟
+                                        بتدور علي عربية بكام؟
                                     </label>
                                     <select class="form-control" id="desired_price_range" name="desired_price_range">
                                         <option value="">اختر الرينج المطلوب</option>
