@@ -68,7 +68,7 @@
                                     <img src="{{ $car->getFirstImage() }}"
                                          class="card-img-top"
                                          alt="{{ $car->full_name }}"
-                                         style="height: 200px; object-fit: cover; transition: transform 0.2s;">
+                                         style="height: 250px; object-fit: scale-down; background-color: #f8f9fa; transition: transform 0.2s;">
                                     <div class="position-absolute inset-0 bg-dark bg-opacity-25 d-flex align-items-center justify-content-center opacity-0 hover-overlay">
                                         <i class="bi bi-eye-fill text-white fs-3"></i>
                                     </div>

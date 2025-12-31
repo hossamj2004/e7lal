@@ -28,7 +28,7 @@
                                 <div class="carousel-inner">
                                     @foreach($car->images as $index => $image)
                                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                            <img src="{{ $image }}" class="d-block w-100" alt="{{ $car->full_name }}" style="height: 400px; object-fit: cover;">
+                                            <img src="{{ $image }}" class="d-block w-100" alt="{{ $car->full_name }}" style="height: 400px; object-fit: scale-down; background-color: #f8f9fa;">
                                         </div>
                                     @endforeach
                                 </div>
@@ -49,7 +49,7 @@
                             </div>
                         @else
                             <!-- Single image -->
-                            <img src="{{ $car->getFirstImage() }}" class="img-fluid" alt="{{ $car->full_name }}" style="width: 100%; height: 400px; object-fit: cover;">
+                            <img src="{{ $car->getFirstImage() }}" class="img-fluid" alt="{{ $car->full_name }}" style="width: 100%; height: 400px; object-fit: scale-down; background-color: #f8f9fa;">
                         @endif
                     @else
                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
@@ -164,7 +164,7 @@
                                     </a>
                                 @endif
                             @else
-                                <a href="{{ route('login') }}" class="btn btn-primary-custom btn-lg flex-grow-1">
+                                <a href="{{ route('register-now') }}" class="btn btn-primary-custom btn-lg flex-grow-1">
                                     <i class="bi bi-box-arrow-in-left me-2"></i>سجل دخول للتبديل
                                 </a>
                             @endif
