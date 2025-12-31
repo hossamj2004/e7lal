@@ -37,16 +37,7 @@ class AdminExchangeRequestController extends Controller
                                  ->orderBy('created_at', 'desc')
                                  ->paginate(15);
 
-        // Get statistics
-        $stats = [
-            'total' => ExchangeRequest::count(),
-            'pending' => ExchangeRequest::where('status', 'pending')->count(),
-            'in_progress' => ExchangeRequest::where('status', 'in_progress')->count(),
-            'completed' => ExchangeRequest::where('status', 'completed')->count(),
-            'favorites' => ExchangeRequest::where('is_favorite', true)->count(),
-        ];
-
-        return view('admin.exchange-requests.index', compact('exchangeRequests', 'stats'));
+        return view('admin.exchange-requests.index', compact('exchangeRequests'));
     }
 
     public function show(ExchangeRequest $exchangeRequest)
