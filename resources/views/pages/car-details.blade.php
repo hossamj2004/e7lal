@@ -44,7 +44,7 @@
                             <!-- Image thumbnails -->
                             <div class="d-flex justify-content-center mt-3 flex-wrap">
                                 @foreach($car->images as $index => $image)
-                                    <img src="{{ $image }}" class="me-2 mb-2 rounded shadow-sm" style="width: 80px; height: 60px; object-fit: cover; cursor: pointer; border: 2px solid {{ $index === 0 ? '#1a5f7a' : 'transparent' }};" data-bs-target="#carImagesCarousel" data-bs-slide-to="{{ $index }}">
+                                    <img src="{{ $image }}" class="me-2 mb-2 rounded shadow-sm" style="width: 80px; height: 60px; object-fit: cover; cursor: pointer;" data-bs-target="#carImagesCarousel" data-bs-slide-to="{{ $index }}">
                                 @endforeach
                             </div>
                         @else
