@@ -345,11 +345,16 @@ $(document).ready(function() {
         const requestId = $(this).data('id');
         const currentStatus = $(this).data('status');
 
+        console.log('Edit status clicked for request:', requestId, 'current status:', currentStatus);
+
         $('#status').val(currentStatus);
         $('#editStatusModal').modal('show');
 
-        // Update form action
-        $('#statusForm').attr('action', `{{ url('admin/exchange-requests') }}/${requestId}`);
+        // Update form action - use proper route helper
+        const updateUrl = `{{ route('admin.exchange-requests.update', ':id') }}`.replace(':id', requestId);
+        $('#statusForm').attr('action', updateUrl);
+
+        console.log('Form action set to:', updateUrl);
     });
 
     // Submit status form
@@ -357,21 +362,35 @@ $(document).ready(function() {
         e.preventDefault();
 
         const formData = new FormData(this);
+        const actionUrl = $(this).attr('action');
+
+        console.log('Status form submitted');
+        console.log('Action URL:', actionUrl);
+        console.log('Form data:', Object.fromEntries(formData));
+
+        // Add method spoofing for PUT request
+        formData.append('_method', 'PUT');
 
         $.ajax({
-            url: $(this).attr('action'),
+            url: actionUrl,
             method: 'POST',
             data: formData,
             processData: false,
             contentType: false,
         })
         .done(function(response) {
+            console.log('Status update response:', response);
             if (response.success) {
+                toastr.success(response.message || 'تم تحديث حالة الطلب بنجاح');
                 $('#editStatusModal').modal('hide');
                 location.reload();
+            } else {
+                alert('فشل في تحديث الحالة: ' + JSON.stringify(response));
             }
         })
-        .fail(function(xhr) {
+        .fail(function(xhr, status, error) {
+            console.error('Status update error:', xhr, status, error);
+            console.error('Response text:', xhr.responseText);
             const errors = xhr.responseJSON?.errors;
             if (errors) {
                 let errorText = '';
@@ -382,7 +401,7 @@ $(document).ready(function() {
                 });
                 alert('خطأ في البيانات:\n' + errorText);
             } else {
-                alert('حدث خطأ أثناء حفظ التغييرات');
+                alert('حدث خطأ أثناء حفظ التغييرات: ' + error);
             }
         });
     });

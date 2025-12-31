@@ -33,7 +33,9 @@ class AdminExchangeRequestController extends Controller
             });
         }
 
-        $exchangeRequests = $query->latest()->paginate(15);
+        $exchangeRequests = $query->orderBy('is_favorite', 'desc')
+                                 ->orderBy('created_at', 'desc')
+                                 ->paginate(15);
 
         // Get statistics
         $stats = [
