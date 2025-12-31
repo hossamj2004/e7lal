@@ -115,7 +115,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>العميل</th>
+                                <th>ملاحظات المدير</th>
                                 <th>رقم الهاتف</th>
                                 <th>نوع السيارة</th>
                                 <th>السعر</th>
@@ -131,11 +131,10 @@
                                 <tr>
                                     <td>{{ $request->id }}</td>
                                     <td>
-                                        @if($request->user)
-                                            <strong>{{ $request->user->name }}</strong>
-                                            <br><small class="text-muted">مسجل</small>
+                                        @if($request->admin_notes)
+                                            <span class="text-dark">{{ Str::limit($request->admin_notes, 50) }}</span>
                                         @else
-                                            <span class="text-muted">زائر</span>
+                                            <span class="text-muted fst-italic">لا توجد ملاحظات</span>
                                         @endif
                                     </td>
                                     <td>
