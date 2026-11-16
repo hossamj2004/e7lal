@@ -105,12 +105,11 @@ class TaskBoardTest extends TestCase
         $response->assertJson(['success' => false]);
     }
 
-    public function test_admin_can_add_column()
+    public function test_guest_can_add_column()
     {
-        $admin = User::factory()->create(['is_admin' => true]);
         $board = Board::factory()->create();
 
-        $response = $this->actingAs($admin)->post("/boards/{$board->id}/columns", [
+        $response = $this->post("/boards/{$board->id}/columns", [
             'name' => 'New Column',
         ]);
 
@@ -123,14 +122,56 @@ class TaskBoardTest extends TestCase
         ]);
     }
 
-    public function test_guest_cannot_add_column()
+    public function test_guest_can_add_task()
     {
         $board = Board::factory()->create();
+        $column = BoardColumn::factory()->create(['board_id' => $board->id]);
 
-        $response = $this->post("/boards/{$board->id}/columns", [
-            'name' => 'New Column',
+        $response = $this->post("/columns/{$column->id}/tasks", [
+            'title' => 'New Task',
+            'description' => 'Task description',
         ]);
 
-        $response->assertStatus(403);
+        $response->assertStatus(200);
+        $response->assertJson(['success' => true]);
+        
+        $this->assertDatabaseHas('tasks', [
+            'column_id' => $column->id,
+            'title' => 'New Task',
+        ]);
+    }
+
+    public function test_guest_can_delete_task()
+    {
+        $board = Board::factory()->create();
+        $column = BoardColumn::factory()->create(['board_id' => $board->id]);
+        $task = Task::factory()->create([
+            'board_id' => $board->id,
+            'column_id' => $column->id,
+        ]);
+
+        $response = $this->delete("/tasks/{$task->id}");
+
+        $response->assertStatus(200);
+        $response->assertJson(['success' => true]);
+        
+        $this->assertDatabaseMissing('tasks', [
+            'id' => $task->id,
+        ]);
+    }
+
+    public function test_cannot_delete_non_empty_column()
+    {
+        $board = Board::factory()->create();
+        $column = BoardColumn::factory()->create(['board_id' => $board->id]);
+        Task::factory()->create([
+            'board_id' => $board->id,
+            'column_id' => $column->id,
+        ]);
+
+        $response = $this->delete("/columns/{$column->id}");
+
+        $response->assertStatus(422);
+        $response->assertJson(['success' => false]);
     }
 }
