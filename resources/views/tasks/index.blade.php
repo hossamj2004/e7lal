@@ -354,6 +354,187 @@
         background: #d0d0d0;
     }
     
+    .task-comment-btn {
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+    
+    .task-comment-btn:hover {
+        background: rgba(26, 95, 122, 0.1);
+    }
+    
+    .comment-count-badge {
+        background: var(--primary-color);
+        color: #fff;
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+    
+    .task-blocked-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-top: 8px;
+    }
+    
+    .task-detail-modal {
+        max-width: 600px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+    
+    .task-detail-header {
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .task-detail-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 10px;
+    }
+    
+    .task-detail-description {
+        color: #666;
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+    
+    .blocked-toggle {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .blocked-toggle label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+    
+    .blocked-toggle input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+    
+    .blocked-reason-input {
+        margin-top: 10px;
+        display: none;
+    }
+    
+    .blocked-reason-input.active {
+        display: block;
+    }
+    
+    .comments-section {
+        border-top: 2px solid #e0e0e0;
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+    
+    .comments-header {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--dark-color);
+        margin-bottom: 15px;
+    }
+    
+    .comment-item {
+        background: #f8f9fa;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    
+    .comment-author {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+    
+    .comment-body {
+        color: #333;
+        line-height: 1.5;
+        margin-bottom: 5px;
+    }
+    
+    .comment-time {
+        color: #999;
+        font-size: 0.8rem;
+    }
+    
+    .comment-delete {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 0.7rem;
+    }
+    
+    .comment-delete:hover {
+        background: #c82333;
+    }
+    
+    .add-comment-form {
+        margin-top: 15px;
+    }
+    
+    .add-comment-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-family: 'Cairo', sans-serif;
+        resize: vertical;
+        min-height: 80px;
+        margin-bottom: 10px;
+    }
+    
+    .add-comment-form input {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-family: 'Cairo', sans-serif;
+        margin-bottom: 10px;
+    }
+    
+    .task-card-clickable {
+        cursor: pointer;
+    }
+    
     .share-section {
         background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: #fff;
@@ -531,31 +712,47 @@
                         </div>
                         <div class="kanban-tasks" id="column-{{ $column->id }}" data-column-id="{{ $column->id }}">
                             @foreach($column->tasks as $task)
-                                <div class="task-card" data-id="{{ $task->id }}" data-column-id="{{ $column->id }}">
+                                <div class="task-card task-card-clickable" data-id="{{ $task->id }}" data-column-id="{{ $column->id }}" onclick="event.stopPropagation(); openTaskDetail({{ $task->id }})">
                                     <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
                                         <div class="task-title" style="margin-bottom: 0; flex: 1;">{{ $task->title }}</div>
                                         @if($canManage)
-                                            <button class="task-delete-btn" onclick="deleteTask({{ $task->id }})" title="حذف المهمة">
+                                            <button class="task-delete-btn" onclick="event.stopPropagation(); deleteTask({{ $task->id }})" title="حذف المهمة">
                                                 <i class="bi bi-x-lg"></i>
                                             </button>
                                         @endif
                                     </div>
                                     @if($task->description)
-                                        <div class="task-description">{{ $task->description }}</div>
+                                        <div class="task-description">{{ Str::limit($task->description, 100) }}</div>
                                     @endif
-                                    <div class="task-actions">
-                                        <button class="task-arrow-btn task-arrow-right" 
-                                                onclick="moveTaskToColumn({{ $task->id }}, 'right')"
-                                                title="نقل لليمين"
-                                                {{ $index === 0 ? 'disabled' : '' }}>
-                                            <i class="bi bi-arrow-right"></i>
+                                    
+                                    @if($task->is_blocked)
+                                        <div class="task-blocked-badge">
+                                            🔴 واقفة: {{ Str::limit($task->blocked_reason, 50) }}
+                                        </div>
+                                    @endif
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                        <button class="task-comment-btn" onclick="event.stopPropagation(); openTaskDetail({{ $task->id }})">
+                                            <i class="bi bi-chat-dots"></i>
+                                            @if($task->comments_count > 0)
+                                                <span class="comment-count-badge">{{ $task->comments_count }}</span>
+                                            @endif
                                         </button>
-                                        <button class="task-arrow-btn task-arrow-left" 
-                                                onclick="moveTaskToColumn({{ $task->id }}, 'left')"
-                                                title="نقل لليسار"
-                                                {{ $index === count($board->columns) - 1 ? 'disabled' : '' }}>
-                                            <i class="bi bi-arrow-left"></i>
-                                        </button>
+                                        
+                                        <div class="task-actions" style="margin: 0;">
+                                            <button class="task-arrow-btn task-arrow-right" 
+                                                    onclick="event.stopPropagation(); moveTaskToColumn({{ $task->id }}, 'right')"
+                                                    title="نقل لليمين"
+                                                    {{ $index === 0 ? 'disabled' : '' }}>
+                                                <i class="bi bi-arrow-right"></i>
+                                            </button>
+                                            <button class="task-arrow-btn task-arrow-left" 
+                                                    onclick="event.stopPropagation(); moveTaskToColumn({{ $task->id }}, 'left')"
+                                                    title="نقل لليسار"
+                                                    {{ $index === count($board->columns) - 1 ? 'disabled' : '' }}>
+                                                <i class="bi bi-arrow-left"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -605,6 +802,54 @@
             </div>
         </div>
         @endif
+        
+        <!-- Task Detail Modal -->
+        <div class="task-modal-overlay" id="taskDetailModal">
+            <div class="task-modal task-detail-modal">
+                <div class="task-detail-header">
+                    <h4 class="task-detail-title" id="detailTaskTitle"></h4>
+                    <p class="task-detail-description" id="detailTaskDescription"></p>
+                </div>
+                
+                <!-- Blocked Status Toggle -->
+                <div class="blocked-toggle">
+                    <label>
+                        <input type="checkbox" id="blockedCheckbox" onchange="toggleBlockedReason()">
+                        <span>🔴 التاسك واقفة</span>
+                    </label>
+                    <div class="blocked-reason-input" id="blockedReasonContainer">
+                        <textarea id="blockedReasonText" placeholder="واقفة على إيه؟" rows="2"></textarea>
+                        <button type="button" onclick="updateBlockedStatus()" style="background: var(--primary-color); color: #fff; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-family: 'Cairo', sans-serif; font-weight: 600;">
+                            حفظ الحالة
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Comments Section -->
+                <div class="comments-section">
+                    <div class="comments-header">
+                        💬 التعليقات
+                    </div>
+                    <div id="commentsList"></div>
+                    
+                    <!-- Add Comment Form -->
+                    <div class="add-comment-form">
+                        <textarea id="commentBody" placeholder="أضف تعليق..." maxlength="2000"></textarea>
+                        <input type="text" id="commentAuthor" placeholder="اسمك (اختياري)" maxlength="100">
+                        <button type="button" onclick="addComment()" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: #fff; padding: 12px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-family: 'Cairo', sans-serif; font-weight: 600;">
+                            <i class="bi bi-send me-2"></i>
+                            إضافة تعليق
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="task-modal-actions" style="margin-top: 20px;">
+                    <button type="button" class="task-modal-cancel" onclick="closeTaskDetail()" style="width: 100%;">
+                        إغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -616,6 +861,7 @@
     const boardId = {{ $board->id }};
     const canManage = {{ $canManage ? 'true' : 'false' }};
     let currentColumnId = null;
+    let currentTaskId = null;
     
     function copyShareLink() {
         const input = document.getElementById('shareUrl');
@@ -757,19 +1003,6 @@
         currentColumnId = null;
     }
     
-    // Close modal when clicking overlay
-    document.addEventListener('click', function(e) {
-        if (e.target.id === 'taskModal') {
-            closeTaskModal();
-        }
-    });
-    
-    // Close modal on Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && document.getElementById('taskModal').classList.contains('active')) {
-            closeTaskModal();
-        }
-    });
     
     document.getElementById('addTaskForm')?.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -927,6 +1160,196 @@
             leftBtn.disabled = (columnIndex === totalColumns - 1);
         }
     }
+    
+    function openTaskDetail(taskId) {
+        currentTaskId = taskId;
+        
+        fetch(`/tasks/${taskId}/comments`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('detailTaskTitle').textContent = data.task.title;
+                    document.getElementById('detailTaskDescription').textContent = data.task.description || '';
+                    
+                    // Set blocked status
+                    document.getElementById('blockedCheckbox').checked = data.task.is_blocked;
+                    document.getElementById('blockedReasonText').value = data.task.blocked_reason || '';
+                    if (data.task.is_blocked) {
+                        document.getElementById('blockedReasonContainer').classList.add('active');
+                    } else {
+                        document.getElementById('blockedReasonContainer').classList.remove('active');
+                    }
+                    
+                    // Render comments
+                    renderComments(data.comments);
+                    
+                    // Show modal
+                    document.getElementById('taskDetailModal').classList.add('active');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading task:', error);
+                alert('حدث خطأ في تحميل التاسك');
+            });
+    }
+    
+    function closeTaskDetail() {
+        document.getElementById('taskDetailModal').classList.remove('active');
+        document.getElementById('commentBody').value = '';
+        document.getElementById('commentAuthor').value = '';
+        currentTaskId = null;
+    }
+    
+    function toggleBlockedReason() {
+        const checkbox = document.getElementById('blockedCheckbox');
+        const container = document.getElementById('blockedReasonContainer');
+        
+        if (checkbox.checked) {
+            container.classList.add('active');
+        } else {
+            container.classList.remove('active');
+            updateBlockedStatus();
+        }
+    }
+    
+    function updateBlockedStatus() {
+        const isBlocked = document.getElementById('blockedCheckbox').checked;
+        const reason = document.getElementById('blockedReasonText').value.trim();
+        const authorName = document.getElementById('commentAuthor').value.trim();
+        
+        if (isBlocked && !reason) {
+            alert('يرجى إدخال سبب التوقف');
+            return;
+        }
+        
+        fetch(`/tasks/${currentTaskId}/blocked`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({
+                is_blocked: isBlocked,
+                blocked_reason: reason,
+                author_name: authorName,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reload the page to show updated badge
+                location.reload();
+            } else {
+                alert(data.message || 'فشل في تحديث الحالة');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating blocked status:', error);
+            alert('حدث خطأ في تحديث الحالة');
+        });
+    }
+    
+    function renderComments(comments) {
+        const container = document.getElementById('commentsList');
+        
+        if (comments.length === 0) {
+            container.innerHTML = '<p style="color: #999; text-align: center;">لا توجد تعليقات بعد</p>';
+            return;
+        }
+        
+        container.innerHTML = comments.map(comment => `
+            <div class="comment-item">
+                ${canManage ? `
+                    <button class="comment-delete" onclick="deleteComment(${comment.id})" title="حذف التعليق">
+                        <i class="bi bi-x"></i>
+                    </button>
+                ` : ''}
+                ${comment.author_name ? `<div class="comment-author">${comment.author_name}</div>` : ''}
+                <div class="comment-body">${comment.body}</div>
+                <div class="comment-time">${comment.relative_time}</div>
+            </div>
+        `).join('');
+    }
+    
+    function addComment() {
+        const body = document.getElementById('commentBody').value.trim();
+        const authorName = document.getElementById('commentAuthor').value.trim();
+        
+        if (!body) {
+            alert('يرجى إدخال نص التعليق');
+            return;
+        }
+        
+        fetch(`/tasks/${currentTaskId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({ body, author_name: authorName }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('commentBody').value = '';
+                // Reload comments
+                openTaskDetail(currentTaskId);
+            } else {
+                alert(data.message || 'فشل في إضافة التعليق');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding comment:', error);
+            alert('حدث خطأ في إضافة التعليق');
+        });
+    }
+    
+    function deleteComment(commentId) {
+        if (!confirm('هل أنت متأكد من حذف هذا التعليق؟')) return;
+        
+        fetch(`/comments/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reload comments
+                openTaskDetail(currentTaskId);
+            } else {
+                alert(data.message || 'فشل في حذف التعليق');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting comment:', error);
+            alert('حدث خطأ في حذف التعليق');
+        });
+    }
+    
+    // Close modals when clicking overlay
+    document.addEventListener('click', function(e) {
+        if (e.target.id === 'taskModal') {
+            closeTaskModal();
+        }
+        if (e.target.id === 'taskDetailModal') {
+            closeTaskDetail();
+        }
+    });
+    
+    // Close modals on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (document.getElementById('taskModal').classList.contains('active')) {
+                closeTaskModal();
+            }
+            if (document.getElementById('taskDetailModal').classList.contains('active')) {
+                closeTaskDetail();
+            }
+        }
+    });
     
     document.addEventListener('DOMContentLoaded', function() {
         const columns = document.querySelectorAll('.kanban-tasks');

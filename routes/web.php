@@ -59,6 +59,12 @@ Route::delete('/columns/{column}', [TaskBoardController::class, 'deleteColumn'])
 Route::post('/columns/{column}/tasks', [TaskBoardController::class, 'addTask'])->name('columns.add-task');
 Route::delete('/tasks/{task}', [TaskBoardController::class, 'deleteTask'])->name('tasks.delete');
 
+// Task comments and blocked status (available on both /tasks and share links)
+Route::get('/tasks/{task}/comments', [TaskBoardController::class, 'getComments'])->name('tasks.comments');
+Route::post('/tasks/{task}/comments', [TaskBoardController::class, 'addComment'])->name('tasks.comments.add');
+Route::delete('/comments/{comment}', [TaskBoardController::class, 'deleteComment'])->name('comments.delete');
+Route::post('/tasks/{task}/blocked', [TaskBoardController::class, 'updateBlocked'])->name('tasks.blocked');
+
 // Auth routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
