@@ -196,6 +196,28 @@
         pointer-events: none;
     }
     
+    .task-delete-btn {
+        background: #dc3545;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.75rem;
+        flex-shrink: 0;
+        margin-right: 8px;
+    }
+    
+    .task-delete-btn:hover {
+        background: #c82333;
+        transform: scale(1.1);
+    }
+    
     @keyframes pulse {
         0%, 100% {
             transform: scale(1);
@@ -204,6 +226,132 @@
             transform: scale(1.05);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
+    }
+    
+    .task-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 9998;
+        animation: fadeIn 0.2s;
+    }
+    
+    .task-modal-overlay.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .task-modal {
+        background: #fff;
+        border-radius: 15px;
+        padding: 30px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    .task-modal h4 {
+        color: var(--dark-color);
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    
+    .task-modal label {
+        display: block;
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 8px;
+    }
+    
+    .task-modal input,
+    .task-modal textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+        margin-bottom: 15px;
+    }
+    
+    .task-modal input:focus,
+    .task-modal textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+    }
+    
+    .task-modal textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    .task-modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .task-modal-actions button {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .task-modal-submit {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #fff;
+    }
+    
+    .task-modal-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .task-modal-cancel {
+        background: #e0e0e0;
+        color: #666;
+    }
+    
+    .task-modal-cancel:hover {
+        background: #d0d0d0;
     }
     
     .share-section {
@@ -369,7 +517,7 @@
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div class="kanban-column-count" id="count-{{ $column->id }}">{{ $column->tasks->count() }}</div>
-                                @if($isAdmin)
+                                @if($canManage)
                                     <div class="column-actions">
                                         <button class="column-action-btn" onclick="editColumn({{ $column->id }}, '{{ addslashes($column->name) }}')" title="تعديل">
                                             <i class="bi bi-pencil"></i>
@@ -384,7 +532,14 @@
                         <div class="kanban-tasks" id="column-{{ $column->id }}" data-column-id="{{ $column->id }}">
                             @foreach($column->tasks as $task)
                                 <div class="task-card" data-id="{{ $task->id }}" data-column-id="{{ $column->id }}">
-                                    <div class="task-title">{{ $task->title }}</div>
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                        <div class="task-title" style="margin-bottom: 0; flex: 1;">{{ $task->title }}</div>
+                                        @if($canManage)
+                                            <button class="task-delete-btn" onclick="deleteTask({{ $task->id }})" title="حذف المهمة">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        @endif
+                                    </div>
                                     @if($task->description)
                                         <div class="task-description">{{ $task->description }}</div>
                                     @endif
@@ -405,8 +560,8 @@
                                 </div>
                             @endforeach
                         </div>
-                        @if($isAdmin)
-                            <button class="add-task-btn" onclick="addTask({{ $column->id }})">
+                        @if($canManage)
+                            <button class="add-task-btn" onclick="showAddTaskModal({{ $column->id }})">
                                 <i class="bi bi-plus-circle me-2"></i>
                                 إضافة مهمة
                             </button>
@@ -414,7 +569,7 @@
                     </div>
                 @endforeach
                 
-                @if($isAdmin)
+                @if($canManage)
                     <div class="add-column-btn" onclick="addColumn()">
                         <i class="bi bi-plus-circle"></i>
                         <span>إضافة عمود</span>
@@ -422,6 +577,34 @@
                 @endif
             </div>
         </div>
+        
+        @if($canManage)
+        <!-- Add Task Modal -->
+        <div class="task-modal-overlay" id="taskModal">
+            <div class="task-modal">
+                <h4>إضافة مهمة جديدة</h4>
+                <form id="addTaskForm">
+                    <div>
+                        <label for="taskTitle">عنوان المهمة <span style="color: #dc3545;">*</span></label>
+                        <input type="text" id="taskTitle" required placeholder="أدخل عنوان المهمة">
+                    </div>
+                    <div>
+                        <label for="taskDescription">الوصف (اختياري)</label>
+                        <textarea id="taskDescription" placeholder="أدخل وصف المهمة"></textarea>
+                    </div>
+                    <div class="task-modal-actions">
+                        <button type="submit" class="task-modal-submit">
+                            <i class="bi bi-check-circle me-2"></i>
+                            إضافة
+                        </button>
+                        <button type="button" class="task-modal-cancel" onclick="closeTaskModal()">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection
@@ -431,7 +614,8 @@
 <script>
     const csrfToken = '{{ csrf_token() }}';
     const boardId = {{ $board->id }};
-    const isAdmin = {{ $isAdmin ? 'true' : 'false' }};
+    const canManage = {{ $canManage ? 'true' : 'false' }};
+    let currentColumnId = null;
     
     function copyShareLink() {
         const input = document.getElementById('shareUrl');
@@ -561,13 +745,44 @@
         });
     }
     
-    function addTask(columnId) {
-        const title = prompt('عنوان المهمة:');
-        if (!title) return;
+    function showAddTaskModal(columnId) {
+        currentColumnId = columnId;
+        document.getElementById('taskModal').classList.add('active');
+        document.getElementById('taskTitle').focus();
+    }
+    
+    function closeTaskModal() {
+        document.getElementById('taskModal').classList.remove('active');
+        document.getElementById('addTaskForm').reset();
+        currentColumnId = null;
+    }
+    
+    // Close modal when clicking overlay
+    document.addEventListener('click', function(e) {
+        if (e.target.id === 'taskModal') {
+            closeTaskModal();
+        }
+    });
+    
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('taskModal').classList.contains('active')) {
+            closeTaskModal();
+        }
+    });
+    
+    document.getElementById('addTaskForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        const description = prompt('وصف المهمة (اختياري):');
+        const title = document.getElementById('taskTitle').value.trim();
+        const description = document.getElementById('taskDescription').value.trim();
         
-        fetch(`/columns/${columnId}/tasks`, {
+        if (!title) {
+            alert('يرجى إدخال عنوان المهمة');
+            return;
+        }
+        
+        fetch(`/columns/${currentColumnId}/tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -586,6 +801,37 @@
         .catch(error => {
             console.error('Error adding task:', error);
             alert('حدث خطأ في إضافة المهمة');
+        });
+    });
+    
+    function deleteTask(taskId) {
+        if (!confirm('هل أنت متأكد من حذف هذه المهمة؟')) return;
+        
+        fetch(`/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const taskCard = document.querySelector(`.task-card[data-id="${taskId}"]`);
+                if (taskCard) {
+                    taskCard.style.animation = 'fadeOut 0.3s';
+                    setTimeout(() => {
+                        taskCard.remove();
+                        updateColumnCounts();
+                    }, 300);
+                }
+            } else {
+                alert(data.message || 'فشل في حذف المهمة');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting task:', error);
+            alert('حدث خطأ في حذف المهمة');
         });
     }
     

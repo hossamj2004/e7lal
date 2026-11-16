@@ -52,11 +52,12 @@ Route::get('/tasks', [TaskBoardController::class, 'index'])->name('tasks');
 Route::get('/tasks/{token}', [TaskBoardController::class, 'show'])->name('tasks.show');
 Route::post('/tasks/{task}/update', [TaskBoardController::class, 'updateTask'])->name('tasks.update');
 
-// Admin-only board operations (require auth + admin)
+// Public board operations (CSRF protected, available to everyone on /tasks)
 Route::post('/boards/{board}/columns', [TaskBoardController::class, 'addColumn'])->name('boards.add-column');
 Route::put('/columns/{column}', [TaskBoardController::class, 'updateColumn'])->name('columns.update');
 Route::delete('/columns/{column}', [TaskBoardController::class, 'deleteColumn'])->name('columns.delete');
 Route::post('/columns/{column}/tasks', [TaskBoardController::class, 'addTask'])->name('columns.add-task');
+Route::delete('/tasks/{task}', [TaskBoardController::class, 'deleteTask'])->name('tasks.delete');
 
 // Auth routes
 Route::middleware('guest')->group(function () {

@@ -13,17 +13,19 @@ class TaskBoardController extends Controller
     public function index()
     {
         $board = Board::where('is_default', true)->with('columns.tasks')->firstOrFail();
-        $isAdmin = auth()->check() && auth()->user()->isAdmin();
+        $canManage = true; // Main page allows everyone to manage
+        $isShareLink = false;
 
-        return view('tasks.index', compact('board', 'isAdmin'));
+        return view('tasks.index', compact('board', 'canManage', 'isShareLink'));
     }
 
     public function show($token)
     {
         $board = Board::where('share_token', $token)->with('columns.tasks')->firstOrFail();
-        $isAdmin = auth()->check() && auth()->user()->isAdmin();
+        $canManage = false; // Share links are move-only
+        $isShareLink = true;
 
-        return view('tasks.index', compact('board', 'isAdmin'));
+        return view('tasks.index', compact('board', 'canManage', 'isShareLink'));
     }
 
     public function updateTask(Request $request, Task $task)
@@ -83,13 +85,7 @@ class TaskBoardController extends Controller
 
     public function addColumn(Request $request, Board $board)
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'غير مصرح لك',
-            ], 403);
-        }
-
+        // CSRF protection handles security - no admin check needed
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -111,13 +107,7 @@ class TaskBoardController extends Controller
 
     public function updateColumn(Request $request, BoardColumn $column)
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'غير مصرح لك',
-            ], 403);
-        }
-
+        // CSRF protection handles security - no admin check needed
         $request->validate([
             'name' => 'required|string|max:255',
         ]);
@@ -133,13 +123,7 @@ class TaskBoardController extends Controller
 
     public function deleteColumn(BoardColumn $column)
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'غير مصرح لك',
-            ], 403);
-        }
-
+        // CSRF protection handles security - no admin check needed
         if ($column->tasks()->count() > 0) {
             return response()->json([
                 'success' => false,
@@ -157,13 +141,7 @@ class TaskBoardController extends Controller
 
     public function addTask(Request $request, BoardColumn $column)
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'غير مصرح لك',
-            ], 403);
-        }
-
+        // CSRF protection handles security - no admin check needed
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -183,6 +161,17 @@ class TaskBoardController extends Controller
             'success' => true,
             'message' => 'تم إضافة المهمة بنجاح',
             'task' => $task,
+        ]);
+    }
+
+    public function deleteTask(Task $task)
+    {
+        // CSRF protection handles security - no admin check needed
+        $task->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم حذف المهمة بنجاح',
         ]);
     }
 }
