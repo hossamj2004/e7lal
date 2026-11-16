@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Board;
 use App\Models\BoardColumn;
 use App\Models\Task;
+use App\Models\TaskComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,11 @@ class TaskBoardController extends Controller
 {
     public function index()
     {
-        $board = Board::where('is_default', true)->with('columns.tasks')->firstOrFail();
+        $board = Board::where('is_default', true)
+            ->with(['columns.tasks' => function($query) {
+                $query->withCount('comments');
+            }])
+            ->firstOrFail();
         $canManage = true; // Main page allows everyone to manage
         $isShareLink = false;
 
@@ -21,7 +26,11 @@ class TaskBoardController extends Controller
 
     public function show($token)
     {
-        $board = Board::where('share_token', $token)->with('columns.tasks')->firstOrFail();
+        $board = Board::where('share_token', $token)
+            ->with(['columns.tasks' => function($query) {
+                $query->withCount('comments');
+            }])
+            ->firstOrFail();
         $canManage = false; // Share links are move-only
         $isShareLink = true;
 
@@ -172,6 +181,114 @@ class TaskBoardController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'تم حذف المهمة بنجاح',
+        ]);
+    }
+
+    public function getComments(Task $task)
+    {
+        $comments = $task->comments()->get()->map(function ($comment) {
+            return [
+                'id' => $comment->id,
+                'body' => $comment->body,
+                'author_name' => $comment->author_name,
+                'created_at' => $comment->created_at->toISOString(),
+                'relative_time' => $comment->relative_time,
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'comments' => $comments,
+            'task' => [
+                'id' => $task->id,
+                'title' => $task->title,
+                'description' => $task->description,
+                'is_blocked' => $task->is_blocked,
+                'blocked_reason' => $task->blocked_reason,
+                'comments_count' => $comments->count(),
+            ],
+        ]);
+    }
+
+    public function addComment(Request $request, Task $task)
+    {
+        // Available on both /tasks and share links
+        $request->validate([
+            'body' => 'required|string|max:2000',
+            'author_name' => 'nullable|string|max:100',
+        ]);
+
+        $comment = $task->comments()->create([
+            'body' => $request->body,
+            'author_name' => $request->author_name,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم إضافة التعليق بنجاح',
+            'comment' => [
+                'id' => $comment->id,
+                'body' => $comment->body,
+                'author_name' => $comment->author_name,
+                'created_at' => $comment->created_at->toISOString(),
+                'relative_time' => $comment->relative_time,
+            ],
+        ]);
+    }
+
+    public function deleteComment(TaskComment $comment)
+    {
+        // Only available on /tasks (canManage), enforced by UI
+        $comment->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم حذف التعليق بنجاح',
+        ]);
+    }
+
+    public function updateBlocked(Request $request, Task $task)
+    {
+        // Available on both /tasks and share links
+        $request->validate([
+            'is_blocked' => 'required|boolean',
+            'blocked_reason' => 'nullable|string|max:500',
+        ]);
+
+        // If blocking, reason is required
+        if ($request->is_blocked && empty($request->blocked_reason)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'يرجى إدخال سبب التوقف',
+            ], 422);
+        }
+
+        $task->update([
+            'is_blocked' => $request->is_blocked,
+            'blocked_reason' => $request->is_blocked ? $request->blocked_reason : null,
+        ]);
+
+        // Auto-add comment recording the block/unblock
+        if ($request->is_blocked) {
+            $task->comments()->create([
+                'body' => "🔴 التاسك واقفة: {$request->blocked_reason}",
+                'author_name' => $request->author_name ?? null,
+            ]);
+        } else {
+            $task->comments()->create([
+                'body' => "✅ التاسك رجعت تشتغل تاني",
+                'author_name' => $request->author_name ?? null,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $request->is_blocked ? 'تم تسجيل التوقف' : 'تم إلغاء التوقف',
+            'task' => [
+                'id' => $task->id,
+                'is_blocked' => $task->is_blocked,
+                'blocked_reason' => $task->blocked_reason,
+            ],
         ]);
     }
 }

@@ -15,10 +15,13 @@ class Task extends Model
         'title',
         'description',
         'position',
+        'is_blocked',
+        'blocked_reason',
     ];
 
     protected $casts = [
         'position' => 'integer',
+        'is_blocked' => 'boolean',
     ];
 
     public function board()
@@ -29,6 +32,11 @@ class Task extends Model
     public function column()
     {
         return $this->belongsTo(BoardColumn::class, 'column_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(TaskComment::class)->orderBy('created_at', 'asc');
     }
 
     public function scopeByColumn($query, $columnId)
