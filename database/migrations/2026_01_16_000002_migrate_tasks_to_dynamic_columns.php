@@ -9,7 +9,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Get all existing boards
+        // Step 1: Add column_id to tasks table first (nullable)
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->foreignId('column_id')->after('board_id')->nullable()->constrained('board_columns')->onDelete('cascade');
+        });
+        
+        // Step 2: Create columns for each board and populate task column_ids
         $boards = DB::table('boards')->get();
         
         foreach ($boards as $board) {
@@ -54,15 +59,10 @@ return new class extends Migration
             }
         }
         
-        // Add column_id to tasks table and make it required
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->foreignId('column_id')->after('board_id')->nullable()->constrained('board_columns')->onDelete('cascade');
-        });
-        
-        // Make column_id not nullable now that all tasks have been updated
+        // Step 3: Make column_id not nullable now that all tasks have been updated
         DB::statement('ALTER TABLE tasks MODIFY column_id BIGINT UNSIGNED NOT NULL');
         
-        // Drop the old status column
+        // Step 4: Drop the old status column
         Schema::table('tasks', function (Blueprint $table) {
             $table->dropColumn('status');
         });
