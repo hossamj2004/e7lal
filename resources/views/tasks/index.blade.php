@@ -149,6 +149,61 @@
         color: #666;
         font-size: 0.9rem;
         line-height: 1.5;
+        margin-bottom: 12px;
+    }
+    
+    .task-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e0e0e0;
+    }
+    
+    .task-arrow-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+    }
+    
+    .task-arrow-btn:hover:not(:disabled) {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .task-arrow-btn:active:not(:disabled) {
+        transform: scale(0.95);
+    }
+    
+    .task-arrow-btn:disabled {
+        background: #e0e0e0;
+        color: #999;
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+    
+    .task-arrow-btn i {
+        pointer-events: none;
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
     }
     
     .share-section {
@@ -304,8 +359,8 @@
 
         <div class="kanban-board-wrapper">
             <div class="kanban-board" id="kanban-board">
-                @foreach($board->columns as $column)
-                    <div class="kanban-column" data-column-id="{{ $column->id }}">
+                @foreach($board->columns as $index => $column)
+                    <div class="kanban-column" data-column-id="{{ $column->id }}" data-column-index="{{ $index }}">
                         <div class="kanban-column-header">
                             <div>
                                 <div class="kanban-column-title">
@@ -328,11 +383,25 @@
                         </div>
                         <div class="kanban-tasks" id="column-{{ $column->id }}" data-column-id="{{ $column->id }}">
                             @foreach($column->tasks as $task)
-                                <div class="task-card" data-id="{{ $task->id }}">
+                                <div class="task-card" data-id="{{ $task->id }}" data-column-id="{{ $column->id }}">
                                     <div class="task-title">{{ $task->title }}</div>
                                     @if($task->description)
                                         <div class="task-description">{{ $task->description }}</div>
                                     @endif
+                                    <div class="task-actions">
+                                        <button class="task-arrow-btn task-arrow-right" 
+                                                onclick="moveTaskToColumn({{ $task->id }}, 'right')"
+                                                title="نقل لليمين"
+                                                {{ $index === 0 ? 'disabled' : '' }}>
+                                            <i class="bi bi-arrow-right"></i>
+                                        </button>
+                                        <button class="task-arrow-btn task-arrow-left" 
+                                                onclick="moveTaskToColumn({{ $task->id }}, 'left')"
+                                                title="نقل لليسار"
+                                                {{ $index === count($board->columns) - 1 ? 'disabled' : '' }}>
+                                            <i class="bi bi-arrow-left"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -518,6 +587,99 @@
             console.error('Error adding task:', error);
             alert('حدث خطأ في إضافة المهمة');
         });
+    }
+    
+    function moveTaskToColumn(taskId, direction) {
+        const taskCard = document.querySelector(`.task-card[data-id="${taskId}"]`);
+        if (!taskCard) return;
+        
+        const currentColumn = taskCard.closest('.kanban-column');
+        const currentColumnIndex = parseInt(currentColumn.getAttribute('data-column-index'));
+        
+        // Get all columns
+        const allColumns = Array.from(document.querySelectorAll('.kanban-column[data-column-id]'));
+        
+        // Calculate target column index based on direction
+        // Right arrow = previous column in DOM (RTL, so visually right)
+        // Left arrow = next column in DOM (RTL, so visually left)
+        let targetColumnIndex;
+        if (direction === 'right') {
+            targetColumnIndex = currentColumnIndex - 1;
+        } else {
+            targetColumnIndex = currentColumnIndex + 1;
+        }
+        
+        // Validate target exists
+        if (targetColumnIndex < 0 || targetColumnIndex >= allColumns.length) {
+            return;
+        }
+        
+        const targetColumn = allColumns[targetColumnIndex];
+        const targetColumnId = targetColumn.getAttribute('data-column-id');
+        const targetTasksContainer = targetColumn.querySelector('.kanban-tasks');
+        
+        // Calculate position (append to end)
+        const targetPosition = targetTasksContainer.querySelectorAll('.task-card').length;
+        
+        // Disable buttons during move
+        const buttons = taskCard.querySelectorAll('.task-arrow-btn');
+        buttons.forEach(btn => btn.disabled = true);
+        
+        // Call the update endpoint
+        fetch(`/tasks/${taskId}/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({
+                column_id: targetColumnId,
+                position: targetPosition,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Move card in DOM
+                taskCard.setAttribute('data-column-id', targetColumnId);
+                targetTasksContainer.appendChild(taskCard);
+                
+                // Update arrow button states
+                updateArrowButtons(taskCard, targetColumnIndex, allColumns.length);
+                
+                // Re-enable buttons
+                buttons.forEach(btn => btn.disabled = false);
+                
+                // Update column counts
+                updateColumnCounts();
+                
+                // Visual feedback
+                taskCard.style.animation = 'none';
+                setTimeout(() => {
+                    taskCard.style.animation = 'pulse 0.5s ease';
+                }, 10);
+            } else {
+                alert(data.message || 'فشل في نقل المهمة');
+                buttons.forEach(btn => btn.disabled = false);
+            }
+        })
+        .catch(error => {
+            console.error('Error moving task:', error);
+            alert('حدث خطأ في نقل المهمة');
+            buttons.forEach(btn => btn.disabled = false);
+        });
+    }
+    
+    function updateArrowButtons(taskCard, columnIndex, totalColumns) {
+        const rightBtn = taskCard.querySelector('.task-arrow-right');
+        const leftBtn = taskCard.querySelector('.task-arrow-left');
+        
+        if (rightBtn) {
+            rightBtn.disabled = (columnIndex === 0);
+        }
+        if (leftBtn) {
+            leftBtn.disabled = (columnIndex === totalColumns - 1);
+        }
     }
     
     document.addEventListener('DOMContentLoaded', function() {
