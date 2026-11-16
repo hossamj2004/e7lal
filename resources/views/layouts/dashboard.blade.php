@@ -180,6 +180,11 @@
                     <i class="bi bi-people"></i> إدارة المستخدمين
                 </a></li>
 
+                <div class="sidebar-section">المهام</div>
+                <li><a href="{{ route('admin.tasks.index') }}" class="{{ request()->routeIs('admin.tasks.*') || request()->routeIs('admin.boards.*') ? 'active' : '' }}">
+                    <i class="bi bi-kanban"></i> إدارة المهام
+                </a></li>
+
                 <div class="sidebar-section">النظام</div>
                 <li><a href="{{ route('admin.database.index') }}" class="{{ request()->routeIs('admin.database.*') ? 'active' : '' }}">
                     <i class="bi bi-database"></i> إدارة قاعدة البيانات

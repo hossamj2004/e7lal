@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\AdminOfferController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminDatabaseController;
 use App\Http\Controllers\Admin\AdminExchangeRequestController;
+use App\Http\Controllers\Admin\AdminTaskController;
+use App\Http\Controllers\TaskBoardController;
 use App\Models\Car;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +46,11 @@ Route::get('/about', function () {
 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+// Task Board routes (public, no login required)
+Route::get('/tasks', [TaskBoardController::class, 'index'])->name('tasks');
+Route::get('/tasks/{token}', [TaskBoardController::class, 'show'])->name('tasks.show');
+Route::post('/tasks/{task}/update', [TaskBoardController::class, 'updateTask'])->name('tasks.update');
 
 // Auth routes
 Route::middleware('guest')->group(function () {
@@ -107,5 +114,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     // Users management
     Route::resource('users', AdminUserController::class);
+
+    // Tasks and Boards management
+    Route::get('/tasks', [AdminTaskController::class, 'index'])->name('tasks.index');
+    Route::get('/tasks/create', [AdminTaskController::class, 'create'])->name('tasks.create');
+    Route::post('/tasks', [AdminTaskController::class, 'store'])->name('tasks.store');
+    Route::get('/tasks/{task}/edit', [AdminTaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('/tasks/{task}', [AdminTaskController::class, 'update'])->name('tasks.update');
+    Route::delete('/tasks/{task}', [AdminTaskController::class, 'destroy'])->name('tasks.destroy');
+    Route::get('/boards', [AdminTaskController::class, 'boards'])->name('tasks.boards');
+    Route::get('/boards/create', [AdminTaskController::class, 'createBoard'])->name('tasks.create-board');
+    Route::post('/boards', [AdminTaskController::class, 'storeBoard'])->name('tasks.store-board');
+    Route::delete('/boards/{board}', [AdminTaskController::class, 'destroyBoard'])->name('tasks.destroy-board');
    });
 // Database management
