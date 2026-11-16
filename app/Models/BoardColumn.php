@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class BoardColumn extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'board_id',
+        'name',
+        'position',
+    ];
+
+    protected $casts = [
+        'position' => 'integer',
+    ];
+
+    public function board()
+    {
+        return $this->belongsTo(Board::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class, 'column_id');
+    }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('position');
+    }
+}

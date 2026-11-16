@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Board;
+use App\Models\BoardColumn;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,33 +13,15 @@ class TaskFactory extends Factory
 
     public function definition(): array
     {
+        $board = Board::factory()->create();
+        $column = BoardColumn::factory()->create(['board_id' => $board->id]);
+        
         return [
-            'board_id' => Board::factory(),
+            'board_id' => $board->id,
+            'column_id' => $column->id,
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'status' => fake()->randomElement(['todo', 'in_progress', 'done']),
             'position' => fake()->numberBetween(0, 10),
         ];
-    }
-
-    public function todo(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => 'todo',
-        ]);
-    }
-
-    public function inProgress(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => 'in_progress',
-        ]);
-    }
-
-    public function done(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => 'done',
-        ]);
     }
 }

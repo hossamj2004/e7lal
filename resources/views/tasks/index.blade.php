@@ -12,11 +12,35 @@
         padding: 40px 0;
     }
     
+    .kanban-board-wrapper {
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary-color) #f0f0f0;
+    }
+    
+    .kanban-board-wrapper::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .kanban-board-wrapper::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+    
+    .kanban-board-wrapper::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 10px;
+    }
+    
     .kanban-board {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
         gap: 20px;
         margin-bottom: 30px;
+        padding-bottom: 10px;
+        min-width: min-content;
     }
     
     .kanban-column {
@@ -25,6 +49,25 @@
         padding: 20px;
         box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         min-height: 500px;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+    }
+    
+    @media (min-width: 768px) {
+        .kanban-column {
+            width: 320px;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .kanban-column {
+            width: 80vw;
+        }
+        
+        .kanban-board-wrapper {
+            margin: 0 -20px;
+            padding: 0 20px;
+        }
     }
     
     .kanban-column-header {
@@ -147,55 +190,88 @@
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
-    .column-todo .kanban-column-header {
-        border-bottom-color: #f093fb;
+    .add-column-btn {
+        background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+        border: 3px dashed #ccc;
+        border-radius: 15px;
+        padding: 20px;
+        min-height: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+        width: 320px;
+        scroll-snap-align: start;
     }
     
-    .column-todo .kanban-column-count {
-        background: linear-gradient(135deg, #f093fb, #f5576c);
-    }
-    
-    .column-in-progress .kanban-column-header {
-        border-bottom-color: #4facfe;
-    }
-    
-    .column-in-progress .kanban-column-count {
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-    }
-    
-    .column-done .kanban-column-header {
-        border-bottom-color: #43e97b;
-    }
-    
-    .column-done .kanban-column-count {
-        background: linear-gradient(135deg, #43e97b, #38f9d7);
-    }
-    
-    @media (max-width: 992px) {
-        .kanban-board {
-            grid-template-columns: 1fr;
+    @media (max-width: 767px) {
+        .add-column-btn {
+            width: 80vw;
         }
-        
-        .kanban-column {
-            min-height: 300px;
-        }
-        
+    }
+    
+    .add-column-btn:hover {
+        background: linear-gradient(135deg, #d0d0d0, #e5e5e5);
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+    
+    .add-column-btn i {
+        font-size: 4rem;
+        color: #999;
+        margin-bottom: 15px;
+    }
+    
+    .add-column-btn span {
+        font-size: 1.2rem;
+        color: #666;
+        font-weight: 600;
+    }
+    
+    .column-actions {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+    
+    .column-action-btn {
+        background: none;
+        border: none;
+        color: #999;
+        cursor: pointer;
+        padding: 5px;
+        font-size: 1rem;
+        transition: color 0.3s;
+    }
+    
+    .column-action-btn:hover {
+        color: var(--primary-color);
+    }
+    
+    .add-task-btn {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+    }
+    
+    .add-task-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    @media (max-width: 767px) {
         .share-input-group {
             flex-direction: column;
-        }
-    }
-    
-    @media (min-width: 768px) and (max-width: 992px) {
-        .kanban-board {
-            display: flex;
-            overflow-x: auto;
-            gap: 15px;
-            padding-bottom: 20px;
-        }
-        
-        .kanban-column {
-            min-width: 300px;
-            flex-shrink: 0;
         }
     }
 </style>
@@ -226,71 +302,55 @@
             </div>
         </div>
 
-        <div class="kanban-board">
-            <div class="kanban-column column-todo">
-                <div class="kanban-column-header">
-                    <div>
-                        <div class="kanban-column-title">
-                            <span>To Do</span>
+        <div class="kanban-board-wrapper">
+            <div class="kanban-board" id="kanban-board">
+                @foreach($board->columns as $column)
+                    <div class="kanban-column" data-column-id="{{ $column->id }}">
+                        <div class="kanban-column-header">
+                            <div>
+                                <div class="kanban-column-title">
+                                    <span class="column-name">{{ $column->name }}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div class="kanban-column-count" id="count-{{ $column->id }}">{{ $column->tasks->count() }}</div>
+                                @if($isAdmin)
+                                    <div class="column-actions">
+                                        <button class="column-action-btn" onclick="editColumn({{ $column->id }}, '{{ addslashes($column->name) }}')" title="تعديل">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="column-action-btn" onclick="deleteColumn({{ $column->id }})" title="حذف">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                        <div class="kanban-column-subtitle">لازم يتعمل</div>
+                        <div class="kanban-tasks" id="column-{{ $column->id }}" data-column-id="{{ $column->id }}">
+                            @foreach($column->tasks as $task)
+                                <div class="task-card" data-id="{{ $task->id }}">
+                                    <div class="task-title">{{ $task->title }}</div>
+                                    @if($task->description)
+                                        <div class="task-description">{{ $task->description }}</div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                        @if($isAdmin)
+                            <button class="add-task-btn" onclick="addTask({{ $column->id }})">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                إضافة مهمة
+                            </button>
+                        @endif
                     </div>
-                    <div class="kanban-column-count" id="count-todo">{{ $tasks['todo']->count() }}</div>
-                </div>
-                <div class="kanban-tasks" id="todo" data-status="todo">
-                    @foreach($tasks['todo'] as $task)
-                        <div class="task-card" data-id="{{ $task->id }}">
-                            <div class="task-title">{{ $task->title }}</div>
-                            @if($task->description)
-                                <div class="task-description">{{ $task->description }}</div>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="kanban-column column-in-progress">
-                <div class="kanban-column-header">
-                    <div>
-                        <div class="kanban-column-title">
-                            <span>In Progress</span>
-                        </div>
-                        <div class="kanban-column-subtitle">شغال عليها</div>
+                @endforeach
+                
+                @if($isAdmin)
+                    <div class="add-column-btn" onclick="addColumn()">
+                        <i class="bi bi-plus-circle"></i>
+                        <span>إضافة عمود</span>
                     </div>
-                    <div class="kanban-column-count" id="count-in_progress">{{ $tasks['in_progress']->count() }}</div>
-                </div>
-                <div class="kanban-tasks" id="in_progress" data-status="in_progress">
-                    @foreach($tasks['in_progress'] as $task)
-                        <div class="task-card" data-id="{{ $task->id }}">
-                            <div class="task-title">{{ $task->title }}</div>
-                            @if($task->description)
-                                <div class="task-description">{{ $task->description }}</div>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="kanban-column column-done">
-                <div class="kanban-column-header">
-                    <div>
-                        <div class="kanban-column-title">
-                            <span>Finished</span>
-                        </div>
-                        <div class="kanban-column-subtitle">خلصت</div>
-                    </div>
-                    <div class="kanban-column-count" id="count-done">{{ $tasks['done']->count() }}</div>
-                </div>
-                <div class="kanban-tasks" id="done" data-status="done">
-                    @foreach($tasks['done'] as $task)
-                        <div class="task-card" data-id="{{ $task->id }}">
-                            <div class="task-title">{{ $task->title }}</div>
-                            @if($task->description)
-                                <div class="task-description">{{ $task->description }}</div>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
+                @endif
             </div>
         </div>
     </div>
@@ -301,6 +361,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
     const csrfToken = '{{ csrf_token() }}';
+    const boardId = {{ $board->id }};
+    const isAdmin = {{ $isAdmin ? 'true' : 'false' }};
     
     function copyShareLink() {
         const input = document.getElementById('shareUrl');
@@ -316,7 +378,7 @@
         }, 2000);
     }
     
-    function updateTaskPosition(taskId, newStatus, newPosition) {
+    function updateTaskPosition(taskId, newColumnId, newPosition) {
         fetch(`/tasks/${taskId}/update`, {
             method: 'POST',
             headers: {
@@ -324,7 +386,7 @@
                 'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify({
-                status: newStatus,
+                column_id: newColumnId,
                 position: newPosition,
             }),
         })
@@ -332,18 +394,129 @@
         .then(data => {
             if (!data.success) {
                 console.error('Failed to update task:', data.message);
+                alert(data.message || 'فشل في تحديث المهمة');
+                location.reload();
             }
         })
         .catch(error => {
             console.error('Error updating task:', error);
+            alert('حدث خطأ في تحديث المهمة');
+            location.reload();
         });
     }
     
     function updateColumnCounts() {
-        ['todo', 'in_progress', 'done'].forEach(status => {
-            const column = document.getElementById(status);
+        document.querySelectorAll('.kanban-column').forEach(column => {
+            const columnId = column.getAttribute('data-column-id');
             const count = column.querySelectorAll('.task-card').length;
-            document.getElementById(`count-${status}`).textContent = count;
+            const countElement = document.getElementById(`count-${columnId}`);
+            if (countElement) {
+                countElement.textContent = count;
+            }
+        });
+    }
+    
+    function addColumn() {
+        const name = prompt('اسم العمود الجديد:');
+        if (!name) return;
+        
+        fetch(`/boards/${boardId}/columns`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({ name }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'فشل في إضافة العمود');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding column:', error);
+            alert('حدث خطأ في إضافة العمود');
+        });
+    }
+    
+    function editColumn(columnId, currentName) {
+        const name = prompt('تعديل اسم العمود:', currentName);
+        if (!name || name === currentName) return;
+        
+        fetch(`/columns/${columnId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({ name }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'فشل في تعديل العمود');
+            }
+        })
+        .catch(error => {
+            console.error('Error updating column:', error);
+            alert('حدث خطأ في تعديل العمود');
+        });
+    }
+    
+    function deleteColumn(columnId) {
+        if (!confirm('هل أنت متأكد من حذف هذا العمود؟ لا يمكن حذف عمود يحتوي على مهام.')) return;
+        
+        fetch(`/columns/${columnId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'فشل في حذف العمود');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting column:', error);
+            alert('حدث خطأ في حذف العمود');
+        });
+    }
+    
+    function addTask(columnId) {
+        const title = prompt('عنوان المهمة:');
+        if (!title) return;
+        
+        const description = prompt('وصف المهمة (اختياري):');
+        
+        fetch(`/columns/${columnId}/tasks`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({ title, description }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'فشل في إضافة المهمة');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding task:', error);
+            alert('حدث خطأ في إضافة المهمة');
         });
     }
     
@@ -359,12 +532,18 @@
                 dragClass: 'sortable-drag',
                 touchStartThreshold: 5,
                 forceFallback: true,
+                scroll: true,
+                scrollSensitivity: 100,
+                scrollSpeed: 10,
+                bubbleScroll: true,
+                delay: 100,
+                delayOnTouchOnly: true,
                 onEnd: function(evt) {
                     const taskId = evt.item.getAttribute('data-id');
-                    const newStatus = evt.to.getAttribute('data-status');
+                    const newColumnId = evt.to.getAttribute('data-column-id');
                     const newPosition = evt.newIndex;
                     
-                    updateTaskPosition(taskId, newStatus, newPosition);
+                    updateTaskPosition(taskId, newColumnId, newPosition);
                     updateColumnCounts();
                 },
             });

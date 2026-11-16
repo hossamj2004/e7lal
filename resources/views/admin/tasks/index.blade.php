@@ -46,9 +46,9 @@
                         <tr>
                             <th>#</th>
                             <th>اللوحة</th>
+                            <th>العمود</th>
                             <th>العنوان</th>
                             <th>الوصف</th>
-                            <th>الحالة</th>
                             <th>الترتيب</th>
                             <th>تاريخ الإنشاء</th>
                             <th>الإجراءات</th>
@@ -65,17 +65,11 @@
                                             <span class="badge bg-primary">افتراضية</span>
                                         @endif
                                     </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ $task->column->name }}</span>
+                                    </td>
                                     <td>{{ $task->title }}</td>
                                     <td>{{ Str::limit($task->description, 50) }}</td>
-                                    <td>
-                                        @if($task->status === 'todo')
-                                            <span class="badge bg-warning">لازم يتعمل</span>
-                                        @elseif($task->status === 'in_progress')
-                                            <span class="badge bg-info">شغال عليها</span>
-                                        @else
-                                            <span class="badge bg-success">خلصت</span>
-                                        @endif
-                                    </td>
                                     <td>{{ $task->position }}</td>
                                     <td>{{ $task->created_at->format('Y-m-d') }}</td>
                                     <td>
