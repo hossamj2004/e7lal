@@ -47,10 +47,16 @@ Route::get('/about', function () {
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
-// Task Board routes (public, no login required)
+// Task Board routes (public, no login required for viewing/moving)
 Route::get('/tasks', [TaskBoardController::class, 'index'])->name('tasks');
 Route::get('/tasks/{token}', [TaskBoardController::class, 'show'])->name('tasks.show');
 Route::post('/tasks/{task}/update', [TaskBoardController::class, 'updateTask'])->name('tasks.update');
+
+// Admin-only board operations (require auth + admin)
+Route::post('/boards/{board}/columns', [TaskBoardController::class, 'addColumn'])->name('boards.add-column');
+Route::put('/columns/{column}', [TaskBoardController::class, 'updateColumn'])->name('columns.update');
+Route::delete('/columns/{column}', [TaskBoardController::class, 'deleteColumn'])->name('columns.delete');
+Route::post('/columns/{column}/tasks', [TaskBoardController::class, 'addTask'])->name('columns.add-task');
 
 // Auth routes
 Route::middleware('guest')->group(function () {

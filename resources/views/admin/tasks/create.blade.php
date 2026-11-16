@@ -12,7 +12,7 @@
 
                 <div class="mb-4">
                     <label class="form-label fw-bold">اللوحة <span class="text-danger">*</span></label>
-                    <select name="board_id" class="form-select @error('board_id') is-invalid @enderror" required>
+                    <select name="board_id" id="board_id" class="form-select @error('board_id') is-invalid @enderror" required onchange="updateColumns()">
                         <option value="">اختر اللوحة</option>
                         @foreach($boards as $board)
                             <option value="{{ $board->id }}" {{ old('board_id') == $board->id ? 'selected' : '' }}>
@@ -22,6 +22,16 @@
                         @endforeach
                     </select>
                     @error('board_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">العمود <span class="text-danger">*</span></label>
+                    <select name="column_id" id="column_id" class="form-select @error('column_id') is-invalid @enderror" required>
+                        <option value="">اختر العمود</option>
+                    </select>
+                    @error('column_id')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -44,17 +54,6 @@
                     @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label class="form-label fw-bold">الحالة <span class="text-danger">*</span></label>
-                    <select name="status" class="form-select @error('status') is-invalid @enderror" required>
-                        <option value="todo" {{ old('status') == 'todo' ? 'selected' : '' }}>لازم يتعمل (To Do)</option>
-                        <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>شغال عليها (In Progress)</option>
-                        <option value="done" {{ old('status') == 'done' ? 'selected' : '' }}>خلصت (Done)</option>
-                    </select>
-                    @error('status')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary-custom">
@@ -78,10 +77,42 @@
             <ul class="text-muted" style="font-size: 0.9rem;">
                 <li class="mb-2">عنوان المهمة مطلوب</li>
                 <li class="mb-2">الوصف اختياري ولكنه مفيد لتوضيح تفاصيل المهمة</li>
-                <li class="mb-2">يمكن للزوار نقل المهام بين الحالات المختلفة في الصفحة العامة</li>
+                <li class="mb-2">يمكن للزوار نقل المهام بين الأعمدة في الصفحة العامة</li>
                 <li class="mb-2">لا يمكن تعديل أو حذف المهام إلا من لوحة التحكم</li>
             </ul>
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    const boardsData = @json($boards->map(fn($board) => [
+        'id' => $board->id,
+        'columns' => $board->columns->map(fn($col) => ['id' => $col->id, 'name' => $col->name])
+    ])->keyBy('id'));
+    
+    function updateColumns() {
+        const boardId = document.getElementById('board_id').value;
+        const columnSelect = document.getElementById('column_id');
+        
+        columnSelect.innerHTML = '<option value="">اختر العمود</option>';
+        
+        if (boardId && boardsData[boardId]) {
+            boardsData[boardId].columns.forEach(column => {
+                const option = document.createElement('option');
+                option.value = column.id;
+                option.textContent = column.name;
+                columnSelect.appendChild(option);
+            });
+        }
+    }
+    
+    // Initialize columns if board is already selected
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('board_id').value) {
+            updateColumns();
+        }
+    });
+</script>
 @endsection

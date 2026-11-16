@@ -36,6 +36,11 @@ class Board extends Model
         return $this->hasMany(Task::class);
     }
 
+    public function columns()
+    {
+        return $this->hasMany(BoardColumn::class)->ordered();
+    }
+
     public function getShareUrlAttribute()
     {
         return route('tasks.show', $this->share_token);

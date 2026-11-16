@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Board;
+use App\Models\BoardColumn;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class AdminTaskController extends Controller
 
     public function index()
     {
-        $boards = Board::with('tasks')->get();
+        $boards = Board::with(['columns', 'tasks.column'])->get();
         $defaultBoard = Board::where('is_default', true)->first();
         
         return view('admin.tasks.index', compact('boards', 'defaultBoard'));
@@ -24,7 +25,7 @@ class AdminTaskController extends Controller
 
     public function create()
     {
-        $boards = Board::all();
+        $boards = Board::with('columns')->get();
         return view('admin.tasks.create', compact('boards'));
     }
 
@@ -32,20 +33,25 @@ class AdminTaskController extends Controller
     {
         $request->validate([
             'board_id' => 'required|exists:boards,id',
+            'column_id' => 'required|exists:board_columns,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:todo,in_progress,done',
         ]);
 
-        $maxPosition = Task::where('board_id', $request->board_id)
-            ->where('status', $request->status)
+        // Verify column belongs to the board
+        $column = BoardColumn::findOrFail($request->column_id);
+        if ($column->board_id != $request->board_id) {
+            return back()->withErrors(['column_id' => 'العمود غير صالح لهذه اللوحة']);
+        }
+
+        $maxPosition = Task::where('column_id', $request->column_id)
             ->max('position') ?? -1;
 
         Task::create([
             'board_id' => $request->board_id,
+            'column_id' => $request->column_id,
             'title' => $request->title,
             'description' => $request->description,
-            'status' => $request->status,
             'position' => $maxPosition + 1,
         ]);
 
@@ -55,7 +61,8 @@ class AdminTaskController extends Controller
 
     public function edit(Task $task)
     {
-        $boards = Board::all();
+        $boards = Board::with('columns')->get();
+        $task->load('column');
         return view('admin.tasks.edit', compact('task', 'boards'));
     }
 
@@ -63,16 +70,22 @@ class AdminTaskController extends Controller
     {
         $request->validate([
             'board_id' => 'required|exists:boards,id',
+            'column_id' => 'required|exists:board_columns,id',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'required|in:todo,in_progress,done',
         ]);
+
+        // Verify column belongs to the board
+        $column = BoardColumn::findOrFail($request->column_id);
+        if ($column->board_id != $request->board_id) {
+            return back()->withErrors(['column_id' => 'العمود غير صالح لهذه اللوحة']);
+        }
 
         $task->update([
             'board_id' => $request->board_id,
+            'column_id' => $request->column_id,
             'title' => $request->title,
             'description' => $request->description,
-            'status' => $request->status,
         ]);
 
         return redirect()->route('admin.tasks.index')
